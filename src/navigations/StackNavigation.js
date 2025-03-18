@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Login from '../screens/Form/Login';
 import Register from '../screens/Form/Register';
+import BottomNavigation from './BottomNavigation';
 
 const MyStack = createStackNavigator()
 
@@ -28,6 +29,15 @@ const StackNavigate = () => {
                     }}
                 />
             } */}
+
+      <MyStack.Screen
+        name="HomePage"
+        component={BottomNavigation}
+        options={{
+          gestureEnabled: false,
+          headerShown: false,
+        }}
+      />
 
       <MyStack.Screen
         name="Login"
