@@ -1,17 +1,24 @@
-import { StyleSheet, Text, View, ScrollView, Dimensions, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Dimensions, TouchableOpacity, StatusBar, SafeAreaView } from 'react-native'
 import React from 'react'
 import HomeTop from '../../components/Home/HomeTop'
 import SliderCard from '../../components/Home/SliderCard'
 import CategoryCard from '../../components/Home/CategoryCard';
+import DoctorCard from '../../components/Home/DoctorCard';
 
 const { width: windowWidth } = Dimensions.get('window'); // Ekran genişliğini almak için
 
 const Home = () => {
+
+  const categoryNameSlice = (name) => {
+    return name.length > 5 ? name.slice(0, 7) + "..." : name
+  }
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={[styles.container, { paddingTop: StatusBar.currentHeight + 5 }]}>
       <View>
         <HomeTop />
       </View>
+
       <View style={styles.slider}>
         <Text style={{ fontSize: 24, fontWeight: "bold" }}>Reytinqi Yüksək Həkimlər</Text>
         <ScrollView
@@ -31,19 +38,33 @@ const Home = () => {
           <TouchableOpacity ><Text style={styles.seeAllText}>Hamısı</Text></TouchableOpacity>
         </View>
         <View style={styles.categoryCardView}>
-          <CategoryCard name="Fiziotera" property1="dark" />
-          <CategoryCard name="Stomato" />
-          <CategoryCard name="Ortoped" />
-          <CategoryCard name="Psixoloq" />
-          <CategoryCard name="Nevroloq" />
-          <CategoryCard name="Kardioloq" />
-          <CategoryCard name="Ginekoloq" />
+          <CategoryCard name={categoryNameSlice("Fizioterapiya")} property1="dark" />
+          <CategoryCard name={categoryNameSlice("Stomatoloq")} />
+          <CategoryCard name={categoryNameSlice("Ortoped")} />
+          <CategoryCard name={categoryNameSlice("Psixoloq")} />
+          <CategoryCard name={categoryNameSlice("Nevroloq")} />
+          <CategoryCard name={categoryNameSlice("Kardioloq")} />
+          <CategoryCard name={categoryNameSlice("Ginekoloq")} />
         </View>
       </View>
 
-
-
-    </View>
+      <View style={styles.categoryView}>
+        <View style={styles.categoryTop}>
+          <Text style={styles.categoryText}>Həkimlər</Text>
+          <TouchableOpacity ><Text style={styles.seeAllText}>Hamısı</Text></TouchableOpacity>
+        </View>
+      </View>
+      <ScrollView
+        contentContainerStyle={styles.doctorSliderCard}>
+        <DoctorCard />
+        <DoctorCard />
+        <DoctorCard />
+        <DoctorCard />
+        <DoctorCard />
+        <DoctorCard />
+        <DoctorCard />
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
@@ -53,16 +74,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-evenly",
-    padding: 16,
+    // padding: 16,
     backgroundColor: "#fff",
   },
   slider: {
     width: "100%",
+    paddingHorizontal: 13,
+    paddingTop: 25,
   },
   categoryView: {
     width: "100%",
     paddingHorizontal: 16,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   categoryTop: {
     flexDirection: "row",
@@ -70,8 +94,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   categoryText: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 22,
+    fontWeight: "500",
+    color: "gray",
   },
   seeAllText: {
     fontSize: 16,
@@ -79,8 +104,13 @@ const styles = StyleSheet.create({
     color: "#2E6FF3",
   },
   categoryCardView: {
-    flexDirection: 'row', // Yatay hizalama
-    flexWrap: 'wrap', // Satırlara sarması için
+    flexDirection: "row",
+    flexWrap: "wrap",
     paddingTop: 16,
+    gap: 21,
+  },
+  doctorSliderCard: {
+    // paddingTop: 16,
+    width: "100%",
   }
 })

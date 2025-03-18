@@ -18,7 +18,7 @@ const BottomNavigation = () => {
                 tabBarInactiveTintColor: '#C0D4FB',
 
                 tabBarStyle: {
-                    height: 100,
+                    height: 95,
                     paddingTop: 10,     
                     backgroundColor: "#2E6FF3" // Tünd göy (daha profesional görünüş)
                 },
@@ -35,7 +35,7 @@ const BottomNavigation = () => {
                     tabBarLabel: 'Əsas',
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
-                            <Ionicons name="home" size={30} color={color} />
+                            <Ionicons name="home" size={26} color={color} />
                     ),
                 }}
             />
@@ -46,7 +46,7 @@ const BottomNavigation = () => {
                     tabBarLabel: 'Rezervlər',
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="calendar" size={30} color={color} />
+                        <Ionicons name="calendar" size={26} color={color} />
                     ),
                 }}
             />
@@ -57,7 +57,7 @@ const BottomNavigation = () => {
                     tabBarLabel: 'Profil',
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="people" size={30} color={color} />
+                        <Ionicons name="people" size={26} color={color} />
                     ),
                 }}
             />
