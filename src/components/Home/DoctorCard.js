@@ -2,8 +2,9 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const { height: windowHeight, width: windowWidth } = Dimensions.get('window');
-
+import { useNavigation } from '@react-navigation/native';
 const DoctorCard = () => {
+    const { navigate } = useNavigation()
     return (
         <View style={styles.card}>
             <View style={styles.cardHeader}>
@@ -20,7 +21,7 @@ const DoctorCard = () => {
                     </Text>
                 </View>
             </View>
-            <View style={{ flexDirection: "row" ,alignItems: "center", justifyContent: "space-between"}}>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                 <View style={styles.ratingSection}>
                     <Text style={styles.rating}>4.8</Text>
                     <Ionicons name="star" size={18} color={"#FFD700"} />
@@ -30,8 +31,8 @@ const DoctorCard = () => {
                     <Text style={styles.timeText}>10:30am - 5:30pm</Text>
                 </View>
             </View>
-            <TouchableOpacity style={styles.rescheduleButton}>
-                <Text style={styles.rescheduleText}>Reschedule</Text>
+            <TouchableOpacity onPress={() => navigate("DoctorDetails", { name: "Nebi" })} style={styles.rescheduleButton}>
+                <Text style={styles.rescheduleText}>Ətraflı</Text>
             </TouchableOpacity>
         </View>
     );

@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         borderRadius: 24,
     },
     darkBg: {
-        backgroundColor: '#33384B', 
+        backgroundColor: '#2E6FF3', 
     },
     lightBg: {
         backgroundColor: '#F1F4F7', 
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     darkText: {
-        color: '#A0A0A0', 
+        color: 'white', 
     },
     lightText: {
         color: '#33384B', 
