@@ -19,7 +19,6 @@ const DetailsCustomHeader = ({ navigation, route }) => {
                     <Text style={styles.headerText}> Doctor’s Info</Text>
                 </View>
 
-                {/* Sağ tərəfdə axtarış və favori düymələri */}
                 <View style={styles.rightContainer}>
                     {/* <TouchableOpacity>
                         <Ionicons name="search" size={28} color="white" />
