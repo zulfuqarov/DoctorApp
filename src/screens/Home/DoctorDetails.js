@@ -1,8 +1,10 @@
-import { StyleSheet, View, Dimensions, Text, Animated, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Dimensions, Text, Animated, TouchableOpacity, ScrollView } from "react-native";
 import React, { useRef, useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import DetailsInfoTop from "../../components/DoctorDetails/DetailsInfoTop";
 import DetailsSelectDate from "../../components/DoctorDetails/DetailsSelectDate";
+import DetailsAbout from "../../components/DoctorDetails/DetailsAbout";
+import DetailsWorkInfo from "../../components/DoctorDetails/DetailsWorkInfo";
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,12 +24,18 @@ const DoctorDetails = () => {
   return (
     <Animated.View style={[styles.container, { height: animatedHeight }]}>
       <View style={styles.fullScreen}>
+
         <TouchableOpacity onPress={toggleHeight} style={styles.arrowContainer}>
-          {/* <Text style={styles.arrow}>yuxari</Text>  */}
           <Ionicons name={`chevron-${expanded ? 'down' : 'up'}-outline`} size={24} color="white" />
         </TouchableOpacity>
         <DetailsInfoTop />
-        <DetailsSelectDate />
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+        >
+          <DetailsAbout />
+          <DetailsWorkInfo />
+          <DetailsSelectDate />
+        </ScrollView>
       </View>
     </Animated.View>
   );
@@ -60,7 +68,8 @@ const styles = StyleSheet.create({
     bottom: 20,
     right: 20,
     padding: 10,
-    borderRadius: 50
+    borderRadius: 50,
+    zIndex: 1,
   },
   arrow: {
     fontSize: 20,

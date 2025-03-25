@@ -4,10 +4,12 @@ import HomeTop from '../../components/Home/HomeTop'
 import SliderCard from '../../components/Home/SliderCard'
 import CategoryCard from '../../components/Home/CategoryCard';
 import DoctorCard from '../../components/Home/DoctorCard';
+import { useNavigation } from '@react-navigation/native';
 
 const { width: windowWidth } = Dimensions.get('window'); // Ekran genişliğini almak için
 
 const Home = () => {
+  const { navigate } = useNavigation()
 
   const categoryNameSlice = (name) => {
     return name.length > 5 ? name.slice(0, 7) + "..." : name
@@ -25,10 +27,27 @@ const Home = () => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
         >
-          <SliderCard />
-          <SliderCard />
-          <SliderCard />
-          <SliderCard />
+          <TouchableOpacity
+            onPress={() => navigate('DoctorDetails')}
+            activeOpacity={0.7}
+          >
+            <SliderCard />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.7}
+          >
+            <SliderCard />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.7}
+          >
+            <SliderCard />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.7}
+          >
+            <SliderCard />
+          </TouchableOpacity>
         </ScrollView>
       </View>
 

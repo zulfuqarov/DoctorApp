@@ -20,9 +20,9 @@ const HomeTop = () => {
                 <TouchableOpacity>
                     <Ionicons name="search" size={28} color="black" />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                {/* <TouchableOpacity>
                     <Ionicons name="heart-outline" size={26} color="black" />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </View>
     )

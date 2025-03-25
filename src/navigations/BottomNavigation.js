@@ -1,8 +1,8 @@
 import { BackHandler, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Profile from '../screens/Home/Profile'
-import Bookings from '../screens/Home/Bookings'
+import Profile from '../screens/Profile/Profile'
+import Bookings from '../screens/Bookings/Bookings'
 import Home from '../screens/Home/Home'
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -14,13 +14,13 @@ const BottomNavigation = () => {
         <MyBottom.Navigator
             initialRouteName="Profile"
             screenOptions={{
-                tabBarActiveTintColor: 'white',  // Qızılı rəng (daha aydın görünər)
+                tabBarActiveTintColor: 'white',  
                 tabBarInactiveTintColor: '#C0D4FB',
 
                 tabBarStyle: {
                     height: 95,
                     paddingTop: 10,     
-                    backgroundColor: "#2E6FF3" // Tünd göy (daha profesional görünüş)
+                    backgroundColor: "#2E6FF3" 
                 },
                 tabBarLabelStyle: {
                     fontSize: 17,

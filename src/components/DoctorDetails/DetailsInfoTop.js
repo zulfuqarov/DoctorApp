@@ -26,15 +26,15 @@ const DetailsInfoTop = () => {
             <View style={styles.infoContainer}>
                 <View style={styles.infoBlock}>
                     <Text style={styles.infoValue}>15yr</Text>
-                    <Text style={styles.infoLabel}>Experience</Text>
+                    <Text style={styles.infoLabel}>Təcrübə</Text>
                 </View>
                 <View style={styles.infoBlock}>
                     <Text style={styles.infoValue}>50+</Text>
-                    <Text style={styles.infoLabel}>Treated</Text>
+                    <Text style={styles.infoLabel}>Müalicə Olunmuş</Text>
                 </View>
                 <View style={styles.infoBlock}>
                     <Text style={styles.infoValue}>$25.00</Text>
-                    <Text style={styles.infoLabel}>Hourly Rate</Text>
+                    <Text style={styles.infoLabel}>Qiymət</Text>
                 </View>
             </View>
         </View>

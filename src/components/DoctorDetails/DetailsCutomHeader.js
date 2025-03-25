@@ -16,7 +16,7 @@ const DetailsCustomHeader = ({ navigation, route }) => {
                     <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
                         <Ionicons name="arrow-back" size={28} color="white" />
                     </TouchableOpacity>
-                    <Text style={styles.headerText}> Doctor’s Info</Text>
+                    <Text style={styles.headerText}>Həkimin Məlumatı</Text>
                 </View>
 
                 <View style={styles.rightContainer}>
