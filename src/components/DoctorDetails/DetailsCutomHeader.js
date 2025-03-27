@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingTop: 65,
+        paddingTop: 55,
         alignItems: "center",
         paddingHorizontal: 15,
         elevation: 0,

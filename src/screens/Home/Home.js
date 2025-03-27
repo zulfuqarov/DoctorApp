@@ -57,14 +57,21 @@ const Home = () => {
           <TouchableOpacity ><Text style={styles.seeAllText}>Hamısı</Text></TouchableOpacity>
         </View>
         <View style={styles.categoryCardView}>
-          <CategoryCard name={categoryNameSlice("Fizioterapiya")} property1="dark" />
-          <CategoryCard name={categoryNameSlice("Stomatoloq")} />
-          <CategoryCard name={categoryNameSlice("Ortoped")} />
-          <CategoryCard name={categoryNameSlice("Psixoloq")} />
-          <CategoryCard name={categoryNameSlice("Nevroloq")} />
-          <CategoryCard name={categoryNameSlice("Kardioloq")} />
-          <CategoryCard name={categoryNameSlice("Ginekoloq")} />
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ paddingHorizontal: 10, gap: 10 }}
+          >
+            <CategoryCard name={categoryNameSlice("Fizioterapiya")} property1="dark" />
+            <CategoryCard name={categoryNameSlice("Stomatoloq")} />
+            <CategoryCard name={categoryNameSlice("Ortoped")} />
+            <CategoryCard name={categoryNameSlice("Psixoloq")} />
+            <CategoryCard name={categoryNameSlice("Nevroloq")} />
+            <CategoryCard name={categoryNameSlice("Kardioloq")} />
+            <CategoryCard name={categoryNameSlice("Ginekoloq")} />
+          </ScrollView>
         </View>
+
       </View>
 
       <View style={styles.categoryView}>
@@ -123,10 +130,7 @@ const styles = StyleSheet.create({
     color: "#2E6FF3",
   },
   categoryCardView: {
-    flexDirection: "row",
-    flexWrap: "wrap",
     paddingTop: 16,
-    gap: 21,
   },
   doctorSliderCard: {
     // paddingTop: 16,

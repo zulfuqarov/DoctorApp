@@ -88,24 +88,8 @@ const StackNavigate = () => {
       <MyStack.Screen
         name="DoctorDetails"
         component={DoctorDetails}
-        // options={{
-        //   title: "Həkim Haqqında",
-        //   headerTitleAlign: "center",
-        //   headerStyle: {
-        //     elevation: 0,
-        //     backgroundColor: "white",
-        //     height: 145
-        //   },
-
-        //   headerTitleStyle: {
-        //     color: "black",
-        //     fontWeight: "bold",
-        //     fontSize: 24,
-        //   },
-
-        // }}
         options={{
-          header: (props) => <DetailsCutomHeader {...props} />, // Custom header əlavə edilir
+          header: (props) => <DetailsCutomHeader {...props} />, 
         }}
       />
 

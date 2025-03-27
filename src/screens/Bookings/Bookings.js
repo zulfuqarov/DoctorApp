@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, StatusBar, Dimensions, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Dimensions, ScrollView, Image,SafeAreaView } from 'react-native';
 import React from 'react';
 import HomeTop from '../../components/Home/HomeTop';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -15,7 +15,7 @@ const Bookings = () => {
   ];
 
   return (
-    <View style={[styles.container, { paddingTop: StatusBar.currentHeight + 10 }]}>
+    <SafeAreaView style={[styles.container, { paddingTop: StatusBar.currentHeight + 10 }]}>
       <HomeTop />
       <Text style={styles.title}>Rezervasiyalar</Text>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -48,7 +48,7 @@ const Bookings = () => {
           </View>
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

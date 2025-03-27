@@ -16,15 +16,14 @@ const BottomNavigation = () => {
             screenOptions={{
                 tabBarActiveTintColor: 'white',  
                 tabBarInactiveTintColor: '#C0D4FB',
-
                 tabBarStyle: {
-                    height: 95,
-                    paddingTop: 10,     
+                    height: 80,
+                    paddingTop: 0,     
                     backgroundColor: "#2E6FF3" 
                 },
                 tabBarLabelStyle: {
                     fontSize: 17,
-                    paddingTop: 10
+                    paddingTop: 5
                 },
             }}
         >

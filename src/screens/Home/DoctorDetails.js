@@ -14,7 +14,7 @@ const DoctorDetails = () => {
 
   const toggleHeight = () => {
     Animated.timing(animatedHeight, {
-      toValue: expanded ? height * 0.57 : height * 0.87,
+      toValue: expanded ? height * 0.57 : height * 0.88,
       duration: 300,
       useNativeDriver: false,
     }).start();
@@ -24,7 +24,6 @@ const DoctorDetails = () => {
   return (
     <Animated.View style={[styles.container, { height: animatedHeight }]}>
       <View style={styles.fullScreen}>
-
         <TouchableOpacity onPress={toggleHeight} style={styles.arrowContainer}>
           <Ionicons name={`chevron-${expanded ? 'down' : 'up'}-outline`} size={24} color="white" />
         </TouchableOpacity>

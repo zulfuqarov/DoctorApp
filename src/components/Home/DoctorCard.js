@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         backgroundColor: '#fff',
         borderColor: '#E9F0FF',
+        marginHorizontal: 10,
     },
     image: {
         width: 50,
