@@ -1,41 +1,28 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import React from 'react'
-import DoctorCard from '../../components/Home/DoctorCard'
+import React, { useState } from 'react';
+import { TouchableWithoutFeedback, Keyboard, View, Text, Modal, TouchableOpacity } from 'react-native';
 
 const Profile = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
-    <View style={styles.container}>
-      <View style={{height: 500}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <Text>Show Modal</Text>
+      </TouchableOpacity>
 
-      </View>
-      <ScrollView>
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-      </ScrollView>
+      {modalVisible && (
+        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <View style={{ flex: 1, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+            <TouchableWithoutFeedback>
+              <View style={{ backgroundColor: 'white', padding: 20 }}>
+                <Text>Modal Content</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      )}
     </View>
-  )
-}
+  );
+};
 
-export default Profile
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    // padding: 16,
-    backgroundColor: "#fff",
-  },
-})
+export default Profile;

@@ -2,9 +2,9 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-const HomeTop = () => {
+const HomeTop = ({ SearchButton }) => {
     return (
-        <View style={styles.container}>
+        <View style={styles.container} >
             <View style={styles.userSection}>
                 <Image
                     source={{ uri: "https://cdn.pixabay.com/photo/2021/06/15/16/11/man-6339003_1280.jpg" }}
@@ -17,7 +17,7 @@ const HomeTop = () => {
             </View>
 
             <View style={styles.iconSection}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={SearchButton}>
                     <Ionicons name="search" size={28} color="black" />
                 </TouchableOpacity>
                 {/* <TouchableOpacity>

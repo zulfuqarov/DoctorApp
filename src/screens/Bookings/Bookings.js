@@ -1,12 +1,16 @@
-import { StyleSheet, Text, View, StatusBar, Dimensions, ScrollView, Image,SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Dimensions, ScrollView, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import React from 'react';
 import HomeTop from '../../components/Home/HomeTop';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DoctorImg from '../../assets/img/DoctorImage.png';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window'); // Ekran ölçülərini əldə et
 
 const Bookings = () => {
+
+  const { navigate } = useNavigation()
+
   const doctors = [
     { name: "David H. Brown", profession: "Psychologist | Apollo Hospital", rate: "$25.00", rating: "4.8", image: DoctorImg, date: "2024-03-30", time: "14:00" },
     { name: "Sarah J. Smith", profession: "Dentist | HealthCare Clinic", rate: "$30.00", rating: "4.9", image: DoctorImg, date: "2024-04-02", time: "09:30" },
@@ -20,32 +24,34 @@ const Bookings = () => {
       <Text style={styles.title}>Rezervasiyalar</Text>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {doctors.map((doctor, index) => (
-          <View key={index} style={styles.card}>
-            <View style={styles.profileContainer}>
-              <Image style={styles.image} source={doctor.image} />
-              <View style={styles.textContainer}>
-                <Text style={styles.name}>{doctor.name}</Text>
-                <View style={styles.ratingContainer}>
-                  <Text style={styles.rating}>{doctor.rating}</Text>
-                  <Ionicons name="star" size={16} color="yellow" />
+          <TouchableOpacity onPress={() => navigate("DoctorDetails")} key={index} style={styles.card}>
+            <View >
+              <View style={styles.profileContainer}>
+                <Image style={styles.image} source={doctor.image} />
+                <View style={styles.textContainer}>
+                  <Text style={styles.name}>{doctor.name}</Text>
+                  <View style={styles.ratingContainer}>
+                    <Text style={styles.rating}>{doctor.rating}</Text>
+                    <Ionicons name="star" size={16} color="yellow" />
+                  </View>
                 </View>
               </View>
-            </View>
-            <Text style={styles.profession}>{doctor.profession}</Text>
-            {/* <Text style={styles.hourlyRate}>
+              <Text style={styles.profession}>{doctor.profession}</Text>
+              {/* <Text style={styles.hourlyRate}>
               <Text style={styles.label}>Hourly Rate: </Text>
               <Text style={styles.rate}>{doctor.rate}</Text>
             </Text> */}
 
-            {/* Rezervasiya Tarixi və Saatı */}
-            <Text style={styles.reservationInfo}>
-              <Text style={styles.label}>Gün: </Text>
-              <Text style={styles.info}>{doctor.date}</Text>
-              {"  "}
-              <Text style={styles.label}>Saat: </Text>
-              <Text style={styles.info}>{doctor.time}</Text>
-            </Text>
-          </View>
+              {/* Rezervasiya Tarixi və Saatı */}
+              <Text style={styles.reservationInfo}>
+                <Text style={styles.label}>Gün: </Text>
+                <Text style={styles.info}>{doctor.date}</Text>
+                {"  "}
+                <Text style={styles.label}>Saat: </Text>
+                <Text style={styles.info}>{doctor.time}</Text>
+              </Text>
+            </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </SafeAreaView>

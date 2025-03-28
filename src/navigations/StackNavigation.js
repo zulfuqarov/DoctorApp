@@ -7,6 +7,7 @@ import Register from '../screens/Form/Register';
 import BottomNavigation from './BottomNavigation';
 import DoctorDetails from '../screens/Home/DoctorDetails';
 import DetailsCutomHeader from '../components/DoctorDetails/DetailsCutomHeader';
+import AllDoctos from '../screens/Home/AllDoctors';
 
 const MyStack = createStackNavigator()
 
@@ -89,7 +90,31 @@ const StackNavigate = () => {
         name="DoctorDetails"
         component={DoctorDetails}
         options={{
-          header: (props) => <DetailsCutomHeader {...props} />, 
+          header: (props) => <DetailsCutomHeader {...props} />,
+        }}
+      />
+
+      <MyStack.Screen
+        name="AllDoctor"
+        component={AllDoctos}
+        options={{
+          headerBackTitle: null,
+          title: "Butun Hekimler",
+          headerTitleAlign: "center",
+          headerStyle: {
+            elevation: 0,
+            backgroundColor: "white",
+            height: 140,
+            borderBottomWidth: 1, 
+            shadowColor: 'transparent',      
+          },
+
+          headerTitleStyle: {
+            color: "black",
+            fontWeight: "bold",
+            fontSize: 24,
+          },
+
         }}
       />
 

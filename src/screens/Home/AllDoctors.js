@@ -7,12 +7,11 @@ import DoctorCard from '../../components/Home/DoctorCard';
 import { useNavigation } from '@react-navigation/native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import SearchModal from '../../components/Home/SearchModal';
 
 
 // const { width: windowWidth } = Dimensions.get('window'); // Ekran genişliğini almak için
 
-const Home = () => {
+const AllDoctors = () => {
   const { navigate } = useNavigation()
 
   const categoryNameSlice = (name) => {
@@ -22,48 +21,8 @@ const Home = () => {
   const [showCategoryModal, setShowCategoryModal] = useState(false)
 
 
-  const [showSearchModal, setShowSearchModal] = useState(false)
-  const SearchButton = () => {
-    setShowSearchModal(!showSearchModal)
-  }
   return (
-    <SafeAreaView style={[styles.container, { paddingTop: StatusBar.currentHeight + 5 }]}>
-
-      <View>
-        <HomeTop SearchButton={SearchButton} />
-      </View>
-
-      {/* Slider top Retings Doctor */}
-      <View style={styles.slider}>
-        <Text style={{ fontSize: 24, fontWeight: "bold" }}>Reytinqi Yüksək Həkimlər</Text>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        >
-          <TouchableOpacity
-            onPress={() => navigate('DoctorDetails')}
-            activeOpacity={0.7}
-          >
-            <SliderCard />
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-          >
-            <SliderCard />
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-          >
-            <SliderCard />
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-          >
-            <SliderCard />
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
-
+    <SafeAreaView style={styles.container}>
       {/* Category */}
       <View style={styles.categoryView}>
         <View style={styles.categoryTop}>
@@ -92,7 +51,9 @@ const Home = () => {
       <View style={styles.categoryView}>
         <View style={styles.categoryTop}>
           <Text style={styles.categoryText}>Həkimlər</Text>
-          <TouchableOpacity onPress={() => navigate("AllDoctor")}><Text style={styles.seeAllText}>Hamısı</Text></TouchableOpacity>
+          <TouchableOpacity>
+            <Ionicons name="search" size={28} color="black" />
+          </TouchableOpacity>
         </View>
       </View>
       <ScrollView
@@ -148,17 +109,12 @@ const Home = () => {
         </View>
       </Modal>
 
-      {/* Search Modal */}
-      {
-        showSearchModal &&
-        <SearchModal setShowSearchModal={setShowSearchModal} />
-      }
 
     </SafeAreaView>
   )
 }
 
-export default Home
+export default AllDoctors
 
 const styles = StyleSheet.create({
   container: {
