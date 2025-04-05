@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Dimensions, TouchableOpacity, StatusBar, SafeAreaView, Modal, } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Dimensions, TouchableOpacity, StatusBar, TextInput, SafeAreaView, Modal, } from 'react-native'
 import React, { useState } from 'react'
 import HomeTop from '../../components/Home/HomeTop'
 import SliderCard from '../../components/Home/SliderCard'
@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 // const { width: windowWidth } = Dimensions.get('window'); // Ekran genişliğini almak için
 
@@ -18,8 +19,11 @@ const AllDoctors = () => {
     return name.length > 5 ? name.slice(0, 7) + "..." : name
   }
 
-  const [showCategoryModal, setShowCategoryModal] = useState(false)
+  const [inputValue, setInputValue] = useState('');
 
+
+  const [showCategoryModal, setShowCategoryModal] = useState(false)
+  const [showSearchModal, setShowSearchModal] = useState(false)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,7 +55,7 @@ const AllDoctors = () => {
       <View style={styles.categoryView}>
         <View style={styles.categoryTop}>
           <Text style={styles.categoryText}>Həkimlər</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowSearchModal(true)} >
             <Ionicons name="search" size={28} color="black" />
           </TouchableOpacity>
         </View>
@@ -109,6 +113,46 @@ const AllDoctors = () => {
         </View>
       </Modal>
 
+      {/* Doctor Search Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showSearchModal}
+        onRequestClose={() => setShowSearchModal(false)}
+        statusBarTranslucent={true}
+        hardwareAccelerated={true}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent2}>
+            <Text style={styles.modalTitle}>Axdarış Edin</Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Hekim və ya ixtisas axtarın"
+              value={inputValue}
+              onChangeText={setInputValue}
+            />
+
+            <View style={styles.buttonGroup}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  setShowSearchModal(false);
+                }}
+              >
+                <Text style={styles.buttonText}>Axdar</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.button, { backgroundColor: '#ccc' }]}
+                onPress={() => setShowSearchModal(false)}
+              >
+                <Text style={styles.buttonText}>Bağla</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
     </SafeAreaView>
   )
@@ -120,8 +164,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    // padding: 16,
-    backgroundColor: "#fff",
   },
   slider: {
     width: "100%",
@@ -153,7 +195,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
   },
   doctorSliderCard: {
-    // paddingTop: 16,
     width: "100%",
   },
   modalContainer: {
@@ -182,6 +223,42 @@ const styles = StyleSheet.create({
   closeModalCategory: {
     alignSelf: "flex-end",
     padding: 10,
-  }
+  },
+
+  // ----------
+
+  // Sreach modal styles
+  modalContent2: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#999',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+  },
+  buttonGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  button: {
+    backgroundColor: '#2E6FF3',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
 
 })

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const CategoryCard = ({ property1, name,icon }) => {
     return (
@@ -22,8 +23,8 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         alignItems: 'center',
-        paddingHorizontal: 14,
-        paddingVertical: 12,
+        paddingHorizontal: wp("5%"),
+        paddingVertical: hp("1%"),
         borderRadius: 24,
     },
     darkBg: {

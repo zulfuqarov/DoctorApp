@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
-const { width: windowWidth } = Dimensions.get('window');
+// const { width: windowWidth } = Dimensions.get('window');
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const SliderCard = () => {
     return (
@@ -44,14 +45,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#2E6FF3',
         borderRadius: 16,
         padding: 16,
-        width: '100%',
         marginVertical: 10,
-        height: 150,
+        height: hp("16%"),
         flexDirection: 'column',
         justifyContent: "space-evenly",
-        marginRight: 10,
-        width: windowWidth * 0.6, 
-
+        marginRight: 8,
+        width: wp("65%"), 
     },
     header: {
         flexDirection: 'row',

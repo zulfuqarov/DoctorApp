@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const DetailsAbout = () => {
     return (
@@ -24,13 +25,13 @@ const styles = StyleSheet.create({
         padding: 16
     },
     selectDateText: {
-        fontSize: 24,
+        fontSize: wp("6%"),
         fontWeight: 'bold',
         color: 'black',
         letterSpacing: 0.5,
     },
     description: {
-        fontSize: 16,
+        fontSize: wp("4%"),
         color: 'gray', // Açıq qara
         lineHeight: 22, // Daha rahat oxumaq üçün sətir aralığı
         textAlign: 'justify',

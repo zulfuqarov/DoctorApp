@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, FlatList } from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const DetailsSelectDate = () => {
   const [showDaySelector, setShowDaySelector] = useState(false);
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   selectDateText: {
-    fontSize: 24,
+    fontSize: wp("6%"),
     fontWeight: 'bold',
     color: 'black',
     letterSpacing: 0.5,
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   dateText: {
-    fontSize: 16,
+    fontSize: wp("4%"),
     fontWeight: 'normal',
     color: '#888',
     letterSpacing: 0.3,
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
   },
   ReservationText:{
     color: 'white',
-    fontSize: 16,
+    fontSize: wp("4%"),
     fontWeight: 'bold'
   }
 });

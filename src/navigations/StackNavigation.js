@@ -90,7 +90,7 @@ const StackNavigate = () => {
         name="DoctorDetails"
         component={DoctorDetails}
         options={{
-          header: (props) => <DetailsCutomHeader {...props} />,
+          headerShown: false, // ✅ Header'ı gizler
         }}
       />
 
@@ -105,8 +105,8 @@ const StackNavigate = () => {
             elevation: 0,
             backgroundColor: "white",
             height: 140,
-            borderBottomWidth: 1, 
-            shadowColor: 'transparent',      
+            borderBottomWidth: 1,
+            shadowColor: 'transparent',
           },
 
           headerTitleStyle: {
