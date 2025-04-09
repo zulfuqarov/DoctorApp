@@ -52,7 +52,7 @@ const AllDoctors = () => {
       </View>
 
       {/* all Dosctor  */}
-      <View style={styles.categoryView}>
+      <View style={[styles.categoryView, { paddingBottom: 30 }]}>
         <View style={styles.categoryTop}>
           <Text style={styles.categoryText}>Həkimlər</Text>
           <TouchableOpacity onPress={() => setShowSearchModal(true)} >
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    backgroundColor: "white",
   },
   slider: {
     width: "100%",

@@ -8,6 +8,7 @@ import BottomNavigation from './BottomNavigation';
 import DoctorDetails from '../screens/Home/DoctorDetails';
 import DetailsCutomHeader from '../components/DoctorDetails/DetailsCutomHeader';
 import AllDoctos from '../screens/Home/AllDoctors';
+import Message from '../screens/Chat/Message';
 
 const MyStack = createStackNavigator()
 
@@ -100,6 +101,30 @@ const StackNavigate = () => {
         options={{
           headerBackTitle: null,
           title: "Butun Hekimler",
+          headerTitleAlign: "center",
+          headerStyle: {
+            elevation: 0,
+            backgroundColor: "white",
+            height: 140,
+            borderBottomWidth: 1,
+            shadowColor: 'transparent',
+          },
+
+          headerTitleStyle: {
+            color: "black",
+            fontWeight: "bold",
+            fontSize: 24,
+          },
+
+        }}
+      />
+
+      <MyStack.Screen
+        name="Message"
+        component={Message}
+        options={{
+          headerBackTitle: null,
+          title: "Söhbətlər",
           headerTitleAlign: "center",
           headerStyle: {
             elevation: 0,
