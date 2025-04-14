@@ -62,8 +62,6 @@ const BottomNavigation = () => {
                 }}
             />
 
-
-
             <MyBottom.Screen
                 name="Bookings"
                 component={Bookings}

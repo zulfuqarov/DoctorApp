@@ -1,4 +1,4 @@
-package com.food
+package com.medlink
 
 import android.app.Application
 import com.facebook.react.PackageList

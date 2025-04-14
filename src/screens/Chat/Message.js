@@ -40,7 +40,6 @@ const Message = () => {
             }
             setMessages((prevMessages) => {
                 const updatedMessages = [...prevMessages, newMessage]
-                // Mesaj ekledikten sonra son mesaja kaydırmak için scrollToEnd çağrısı yapıyoruz
                 flatListRef.current.scrollToEnd({ animated: true })
                 return updatedMessages
             })
@@ -72,12 +71,12 @@ const Message = () => {
         }}>
             <View style={styles.container}>
                 <FlatList
-                    ref={flatListRef}  // FlatList'in ref'ini bağlıyoruz
+                    ref={flatListRef}  
                     data={messages}
                     keyExtractor={(item) => item.id}
                     renderItem={renderItem}
                     contentContainerStyle={{ paddingVertical: 10 }}
-                    onContentSizeChange={() => flatListRef.current.scrollToEnd({ animated: true })}  // İçerik değiştiğinde son mesaja kaydır
+                    onContentSizeChange={() => flatListRef.current.scrollToEnd({ animated: true })}  
                 />
                 <View style={styles.inputContainer}>
                     <TextInput
