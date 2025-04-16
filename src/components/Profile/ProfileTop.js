@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const ProfileTop = () => {
+const ProfileTop = ({ shoModalFunc }) => {
     return (
         <View style={styles.container}>
             <View style={styles.container2}>
                 <Image
-                    source={{ uri: 'https://i.pravatar.cc/150?img=12' }}
+                    source={{ uri: 'https://pngimg.com/uploads/doctor/doctor_PNG16019.png' }}
                     style={styles.avatar}
                 />
                 <View style={styles.nameContainer}>
@@ -14,7 +14,7 @@ const ProfileTop = () => {
                     <Text style={styles.lastName}>Zulfuqarov</Text>
                 </View>
             </View>
-            <TouchableOpacity style={styles.editButton}>
+            <TouchableOpacity onPress={shoModalFunc} style={styles.editButton}>
                 <Text style={styles.editButtonText}>Düzəliş</Text>
             </TouchableOpacity>
         </View>

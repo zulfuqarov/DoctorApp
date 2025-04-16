@@ -1,17 +1,22 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Personal from '../../components/Profile/Personal'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ProfileTop from '../../components/Profile/ProfileTop'
 
 const Profile = () => {
+
+  const [showModal, setShowModal] = useState(false)
+  const shoModalFunc = () => {
+    setShowModal(!showModal)
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <View>
-        <ProfileTop />
+        <ProfileTop shoModalFunc={shoModalFunc} />
       </View>
       <View style={styles.container}>
-        <Personal />
+        <Personal setShowModal={setShowModal} showModal={showModal} />
       </View>
     </SafeAreaView>
   )
