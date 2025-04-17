@@ -1,15 +1,28 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Button, Animated, Easing, Dimensions } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  Animated,
+  Easing,
+  Dimensions,
+} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { launchImageLibrary } from 'react-native-image-picker';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import Logo from "../../assets/img/Logo.png"
-const { height } = Dimensions.get('window')
+import Logo from '../../assets/img/Logo.png';
+
+const { height } = Dimensions.get('window');
 
 const Personal = ({ showModal, setShowModal }) => {
-
   const [photo, setPhoto] = useState(null);
+  const slideAnim = useRef(new Animated.Value(height)).current;
+
   const selectImage = () => {
     const options = {
       mediaType: 'photo',
@@ -28,91 +41,176 @@ const Personal = ({ showModal, setShowModal }) => {
     });
   };
 
-
-  const slideAnim = useRef(new Animated.Value(height)).current
-
   useEffect(() => {
-    if (!showModal) {
-      setShowModal(true)
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.out(Easing.ease),
-      }).start()
-    } else {
-      Animated.timing(slideAnim, {
-        toValue: height,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.in(Easing.ease),
-      }).start(() => setShowModal(false))
-    }
-  }, [showModal])
+    Animated.timing(slideAnim, {
+      toValue: showModal ? 0 : height,
+      duration: 300,
+      useNativeDriver: false,
+      easing: showModal ? Easing.out(Easing.ease) : Easing.in(Easing.ease),
+    }).start(() => {
+      if (!showModal) {
+        setShowModal(false);
+      }
+    });
+  }, [showModal]);
 
   return (
     <View style={styles.container}>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Image
-          source={Logo}
-          style={{ width: 200, height: 200, marginTop: 20, borderRadius: 10 }}
-        />
+      <View style={styles.logoWrapper}>
+        <Image source={Logo} style={styles.logo} />
       </View>
+
       <Animated.View style={[styles.panel, { top: slideAnim }]}>
+        <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: wp('40%') }}
+          enableOnAndroid={true}
+          keyboardShouldPersistTaps="handled"
+        >
+          <TouchableOpacity style={styles.imageView} onPress={selectImage}>
+            <Image
+              source={{
+                uri: photo
+                  ? photo.uri
+                  : 'https://pngimg.com/uploads/doctor/doctor_PNG16019.png',
+              }}
+              style={styles.image}
+            />
+            <View style={styles.imageOverlay} />
+            <Ionicons name="camera-outline" size={30} color="white" style={styles.imageIcon} />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.imageView} onPress={selectImage}>
-          <View style={styles.ImageColor}>
-
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Ad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Adınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
           </View>
-          <Ionicons
-            name="camera-outline"
-            size={30}
-            color="white"
-            style={styles.ImageIcon}
-          />
-          <Image
-            source={{ uri: `${photo
-              ? photo.uri
-              : "https://pngimg.com/uploads/doctor/doctor_PNG16019.png"
-            }` }}
-            style={styles.image}
-          />
-        </TouchableOpacity>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Ad</Text>
-          <TextInput style={styles.input} placeholder="Adınızı daxil edin" placeholderTextColor="rgba(178,188,201,1)" />
-        </View>
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Soyad</Text>
-          <TextInput style={styles.input} placeholder="Soyadınızı daxil edin" placeholderTextColor="rgba(178,188,201,1)" />
-        </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Soyad</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Soyadınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+          </View>
+          <TouchableOpacity style={styles.submitButton} onPress={() => setShowModal(false)}>
+            <Text style={styles.submitButtonText}>Təsdiqlə</Text>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
       </Animated.View>
     </View>
-  )
-}
+  );
+};
 
-export default Personal
+export default Personal;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: 'flex-start',
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: '#f97316',
-    padding: 12,
-    borderRadius: 8,
+  logoWrapper: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+  logo: {
+    width: 200,
+    height: 200,
+    marginTop: 20,
+    borderRadius: 10,
   },
   panel: {
     position: 'absolute',
@@ -128,65 +226,64 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 10,
-    // justifyContent: 'center',
+    paddingBottom: wp("25%")
   },
   imageView: {
     width: 150,
     height: 150,
-    borderRadius: "50%",
+    borderRadius: 75,
     marginBottom: 25,
     alignSelf: 'center',
     overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  ImageColor: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 1,
-    backgroundColor: "black",
-    borderRadius: "50%",
+  imageOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'black',
     opacity: 0.3,
+    zIndex: 1,
+    borderRadius: 75,
   },
-  ImageIcon: {
-    position: "absolute",
-    top: 37.5,
-    left: 37.5,
-    right: 37.5,
-    bottom: 37.5,
+  imageIcon: {
+    position: 'absolute',
     zIndex: 2,
-    fontSize: wp("15%"),
-    fontWeight: "600",
-    textAlign: "center",
-    // lineHeight: 250,
-    textTransform: "uppercase",
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   inputGroup: {
-    width: "100%",
-    maxWidth: "100%",
+    width: '100%',
     marginBottom: 20,
   },
   label: {
-    color: "rgba(51,56,75,1)",
-    fontSize: wp("4%"),
-    lineHeight: 26,
-    fontWeight: "500",
+    color: 'rgba(51,56,75,1)',
+    fontSize: wp('4%'),
+    fontWeight: '500',
     marginBottom: 8,
   },
   input: {
-    width: "100%",
+    width: '100%',
     padding: 10,
     borderWidth: 1,
-    borderColor: "rgba(244,244,246,1)",
+    borderColor: 'rgba(244,244,246,1)',
     borderRadius: 16,
-    backgroundColor: "rgba(250,250,252,1)",
-    fontSize: wp("4"),
-    color: "#333",
+    backgroundColor: 'rgba(250,250,252,1)',
+    fontSize: wp('4%'),
+    color: '#333',
   },
-})
-
+  submitButton: {
+    width: '100%',
+    padding: 12,
+    borderRadius: 16,
+    backgroundColor: '#007BFF',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  submitButtonText: {
+    color: 'white',
+    fontSize: wp('4%'),
+    fontWeight: '600',
+  },
+});
