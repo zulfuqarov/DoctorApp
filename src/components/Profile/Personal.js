@@ -70,6 +70,7 @@ const Personal = ({ showModal, setShowModal }) => {
           extraScrollHeight={Platform.OS === 'ios' ? -80 : 0}
 
         >
+          
           <TouchableOpacity style={styles.imageView} onPress={selectImage}>
             <Image
               source={{
@@ -82,16 +83,7 @@ const Personal = ({ showModal, setShowModal }) => {
             <View style={styles.imageOverlay} />
             <Ionicons name="camera-outline" size={30} color="white" style={styles.imageIcon} />
           </TouchableOpacity>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Ad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Adınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
-
+                
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Soyad</Text>
             <TextInput
@@ -108,86 +100,7 @@ const Personal = ({ showModal, setShowModal }) => {
               placeholderTextColor="rgba(178,188,201,1)"
             />
           </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Soyadınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Soyadınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Soyadınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Soyadınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Soyadınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Soyadınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Soyadınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Soyadınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Soyadınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Soyadınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
+                        
           <TouchableOpacity style={styles.submitButton} onPress={() => setShowModal(false)}>
             <Text style={styles.submitButtonText}>Təsdiqlə</Text>
           </TouchableOpacity>

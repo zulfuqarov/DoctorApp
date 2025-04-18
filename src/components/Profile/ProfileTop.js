@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const ProfileTop = ({ shoModalFunc }) => {
+const ProfileTop = ({ shoModalFunc, showModal }) => {
     return (
         <View style={styles.container}>
             <View style={styles.container2}>
@@ -14,8 +14,8 @@ const ProfileTop = ({ shoModalFunc }) => {
                     <Text style={styles.lastName}>Zulfuqarov</Text>
                 </View>
             </View>
-            <TouchableOpacity onPress={shoModalFunc} style={styles.editButton}>
-                <Text style={styles.editButtonText}>Düzəliş</Text>
+            <TouchableOpacity onPress={shoModalFunc} style={[styles.editButton, showModal && { backgroundColor: "#F87171" }]}>
+                <Text style={styles.editButtonText}>{showModal ? "Ləvğ Et" : "Düzəliş"}</Text>
             </TouchableOpacity>
         </View>
     )

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Personal from '../../components/Profile/Personal'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ProfileTop from '../../components/Profile/ProfileTop'
+import DoctorProfile from '../../components/Profile/DoctorProfile'
 
 const Profile = () => {
 
@@ -13,10 +14,11 @@ const Profile = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <View>
-        <ProfileTop shoModalFunc={shoModalFunc} />
+        <ProfileTop showModal={showModal} shoModalFunc={shoModalFunc} />
       </View>
       <View style={styles.container}>
-        <Personal setShowModal={setShowModal} showModal={showModal} />
+        {/* <Personal setShowModal={setShowModal} showModal={showModal} /> */}
+        <DoctorProfile setShowModal={setShowModal} showModal={showModal} />
       </View>
     </SafeAreaView>
   )
