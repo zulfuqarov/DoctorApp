@@ -8,6 +8,7 @@ import {
   Animated,
   Easing,
   Dimensions,
+  Platform
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -63,9 +64,11 @@ const Personal = ({ showModal, setShowModal }) => {
       <Animated.View style={[styles.panel, { top: slideAnim }]}>
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: wp('40%') }}
+          contentContainerStyle={{ paddingBottom: wp("40%") }}
           enableOnAndroid={true}
           keyboardShouldPersistTaps="handled"
+          extraScrollHeight={Platform.OS === 'ios' ? -80 : 0}
+
         >
           <TouchableOpacity style={styles.imageView} onPress={selectImage}>
             <Image
