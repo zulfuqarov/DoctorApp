@@ -57,6 +57,16 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
   }, [showModal]);
 
   const [category, setCategory] = useState("")
+  const days = ['B.e', 'Ç.a', 'Ç', 'C.a', 'C', 'Ş', 'B'];
+  const [selectedDays, setSelectedDays] = useState([]);
+
+  const toggleDay = (day) => {
+    if (selectedDays.includes(day)) {
+      setSelectedDays(selectedDays.filter(d => d !== day));
+    } else {
+      setSelectedDays([...selectedDays, day]);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -140,6 +150,33 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
               placeholderTextColor="rgba(178,188,201,1)"
             />
           </View>
+
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>İş Günləri</Text>
+            <View style={styles.daysContainer}>
+              {days.map((day, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.dayButton,
+                    selectedDays.includes(day) && styles.selectedDay
+                  ]}
+                  onPress={() => toggleDay(day)}
+                >
+                  <Text
+                    style={[
+                      styles.dayText,
+                      selectedDays.includes(day) && styles.selectedText
+                    ]}
+                  >
+                    {day}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
 
           <TouchableOpacity style={styles.submitButton} onPress={() => setShowModal(false)}>
             <Text style={styles.submitButtonText}>Təsdiqlə</Text>
@@ -251,4 +288,38 @@ const styles = StyleSheet.create({
     fontSize: wp('4%'),
     color: '#333',
   },
+
+  daysContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+    gap: 10,
+  },
+
+  dayButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    backgroundColor: '#f0f0f0',
+    marginBottom: 10,
+    minWidth: '28%',
+    alignItems: 'center',
+  },
+
+  selectedDay: {
+    backgroundColor: '#007BFF',
+  },
+
+  dayText: {
+    fontSize: wp('4%'),
+    color: '#333',
+  },
+
+  selectedText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+
+
 });
