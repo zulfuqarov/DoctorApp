@@ -16,6 +16,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Logo from '../../assets/img/Logo.png';
 
@@ -61,12 +62,17 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
   const [selectedDays, setSelectedDays] = useState([]);
 
   const toggleDay = (day) => {
-    if (selectedDays.includes(day)) {
-      setSelectedDays(selectedDays.filter(d => d !== day));
+
+    const checkDay = selectedDays.some(d => d.workDate === day);
+    console.log(checkDay)
+    console.log(day)
+    if (checkDay) {
+      setSelectedDays(selectedDays.filter(d => d.workDate !== day));
     } else {
-      setSelectedDays([...selectedDays, day]);
+      setSelectedDays([...selectedDays, { workDate: day }]);
     }
   };
+
 
   return (
     <View style={styles.container}>
@@ -97,6 +103,8 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
             <Ionicons name="camera-outline" size={30} color="white" style={styles.imageIcon} />
           </TouchableOpacity>
 
+
+          {/* name input */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Ad</Text>
             <TextInput
@@ -105,6 +113,7 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
               placeholderTextColor="rgba(178,188,201,1)"
             />
           </View>
+          {/* surname Input */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Soyad</Text>
             <TextInput
@@ -114,6 +123,8 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
             />
           </View>
 
+
+          {/* category */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>İxtisas</Text>
             <Picker
@@ -137,6 +148,7 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
             </Picker>
           </View>
 
+          {/* details indput */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Ətraflı</Text>
             <TextInput
@@ -151,7 +163,7 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
             />
           </View>
 
-
+          {/* work dealy */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>İş Günləri</Text>
             <View style={styles.daysContainer}>
@@ -160,14 +172,14 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
                   key={index}
                   style={[
                     styles.dayButton,
-                    selectedDays.includes(day) && styles.selectedDay
+                    selectedDays.some((d) => d.workDate === day) && styles.selectedDay
                   ]}
                   onPress={() => toggleDay(day)}
                 >
                   <Text
                     style={[
                       styles.dayText,
-                      selectedDays.includes(day) && styles.selectedText
+                      selectedDays.some((d) => d.workDate === day) && styles.selectedText
                     ]}
                   >
                     {day}
@@ -175,6 +187,33 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
                 </TouchableOpacity>
               ))}
             </View>
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>İş Saat Aralıqları</Text>
+
+            {
+              selectedDays && selectedDays.length > 0 &&
+              selectedDays.map((day, index) => (
+                <View
+                  key={index}
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingTop: 20,
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#ccc',
+                    paddingBottom: 5,
+                  }}
+                >
+                  <Text style={[styles.label, { fontSize: wp('3.5%') }]}>{day.workDate}</Text>
+                  <Text style={[styles.label, { fontSize: wp('3.5%') }]}>Saat</Text>
+                </View>
+              ))
+
+            }
+
           </View>
 
 
