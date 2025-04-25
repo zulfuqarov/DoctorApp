@@ -69,10 +69,51 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
     if (checkDay) {
       setSelectedDays(selectedDays.filter(d => d.workDate !== day));
     } else {
-      setSelectedDays([...selectedDays, { workDate: day }]);
+      setSelectedDays([...selectedDays, { workDate: day, startTime: '', endTime: '' }]);
     }
   };
 
+  const [showWrokTimeButton, setshowWrokTimeButton] = useState()
+  const showWrokTimeFunck = (workDay) => {
+    if (showWrokTimeButton === workDay) {
+      setshowWrokTimeButton(null)
+    } else {
+      setshowWrokTimeButton(workDay)
+    }
+  }
+
+  const [showPicker, setShowPicker] = useState(false);
+  const [pickerType, setPickerType] = useState('start');
+
+  const onChangePicker = (event, selectedDate) => {
+    setShowPicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      if (pickerType === 'start') {
+        setSelectedDays(prevState =>
+          prevState.map(day =>
+            day.workDate === showWrokTimeButton
+              ? { ...day, startTime: selectedDate }
+              : day
+          )
+        );
+      } else if (pickerType === 'end') {
+        setSelectedDays(prevState =>
+          prevState.map(day =>
+            day.workDate === showWrokTimeButton
+              ? { ...day, endTime: selectedDate }
+              : day
+          )
+        );
+      }
+    }
+  };
+
+  const showDatePicker = (type, date) => {
+    setPickerType(type);
+    setShowPicker(true);
+  };
+
+  console.log(selectedDays)
 
   return (
     <View style={styles.container}>
@@ -198,17 +239,149 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
                 <View
                   key={index}
                   style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
                     paddingTop: 20,
                     borderBottomWidth: 1,
                     borderBottomColor: '#ccc',
                     paddingBottom: 5,
                   }}
                 >
-                  <Text style={[styles.label, { fontSize: wp('3.5%') }]}>{day.workDate}</Text>
-                  <Text style={[styles.label, { fontSize: wp('3.5%') }]}>Saat</Text>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: '100%',
+                  }}>
+                    <Text style={[styles.label, { fontSize: wp('3.5%') }]}>{day.workDate}</Text>
+                    <TouchableOpacity
+                      onPress={() => showWrokTimeFunck(day.workDate)}
+                      style={[styles.label, { flexDirection: 'row', justifyContent: "center", alignItems: 'center' }]}>
+                      <Text style={{ fontSize: wp('4%'), marginRight: 8 }}>
+                        Vaxt seçin
+                      </Text>
+                      <Ionicons name={showWrokTimeButton === day.workDate ? "chevron-up" : 'chevron-down'} size={wp('4%')} color="#007BFF" />
+                    </TouchableOpacity>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      padding: 20,
+                      display: showWrokTimeButton === day.workDate ? "flex" : "none",
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => showDatePicker('start', day)}
+                      style={{
+                        backgroundColor: '#007BFF',
+                        paddingVertical: 8,
+                        paddingHorizontal: 16,
+                        borderRadius: 6,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        elevation: 2,
+                        width: wp('35%'),
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: '#fff',
+                          fontSize: wp('3.5%'),
+                          fontWeight: '500',
+                          textAlign: 'center',
+                          paddingBottom: 7
+                        }}
+                      >
+                        Başlama Saatı
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#fff",
+                          fontSize: wp('3.5%'),
+                          fontWeight: '500',
+                          textAlign: 'center',
+                        }}
+                      >
+                        {day.startTime
+                          ? day.startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                          : '----'}
+                      </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={() => showDatePicker('end', day)}
+                      style={{
+                        backgroundColor: '#007BFF',
+                        paddingVertical: 8,
+                        paddingHorizontal: 16,
+                        borderRadius: 6,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        elevation: 2,
+                        width: wp('35%'),
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: '#fff',
+                          fontSize: wp('3.5%'), // Daha kiçik font ölçüsü
+                          fontWeight: '500', // Daha incə font
+                          textAlign: 'center', // Mətnin mərkəzə yerləşməsi
+                          paddingBottom: 7
+                        }}
+                      >
+                        Bitmə Saatı
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#fff",
+                          fontSize: wp('3.5%'),
+                          fontWeight: '500',
+                          textAlign: 'center',
+                        }}
+                      >
+                        {day.endTime
+                          ? day.endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                          : '----'}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  {/* <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      padding: 20,
+                      display: showWrokTimeButton === day.workDate ? "flex" : "none",
+                      width: '100%',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ fontSize: wp('3.5%'), color: '#333' }}>
+                      Başlama Saatı: {day.startTime
+                        ? day.startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                        : 'Seçilməyib'}
+                    </Text>
+                    <Text style={{ fontSize: wp('3.5%'), color: '#333' }}>
+                      Başlama Saatı: {day.endTime
+                        ? day.endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                        : 'Seçilməyib'}
+                    </Text>
+                  </View> */}
+
+                  {showPicker && (
+                    <DateTimePicker
+                      value={
+                        pickerType === 'start'
+                          ? day.startTime || new Date()
+                          : day.endTime || new Date()
+                      }
+                      mode="time"
+                      is24Hour={true}
+                      display="default"
+                      onChange={onChangePicker}
+                    />
+                  )}
+
                 </View>
               ))
 
