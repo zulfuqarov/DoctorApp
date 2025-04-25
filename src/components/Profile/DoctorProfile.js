@@ -86,7 +86,14 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
   const [pickerType, setPickerType] = useState('start');
 
   const onChangePicker = (event, selectedDate) => {
-    setShowPicker(Platform.OS === 'ios');
+    // setShowPicker(Platform.OS === 'ios');
+    if (event.type === 'dismissed') {
+      setShowPicker(false);
+      return;
+    }
+
+
+
     if (selectedDate) {
       if (pickerType === 'start') {
         setSelectedDays(prevState =>
@@ -346,27 +353,7 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  {/* <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      padding: 20,
-                      display: showWrokTimeButton === day.workDate ? "flex" : "none",
-                      width: '100%',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text style={{ fontSize: wp('3.5%'), color: '#333' }}>
-                      Başlama Saatı: {day.startTime
-                        ? day.startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
-                        : 'Seçilməyib'}
-                    </Text>
-                    <Text style={{ fontSize: wp('3.5%'), color: '#333' }}>
-                      Başlama Saatı: {day.endTime
-                        ? day.endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
-                        : 'Seçilməyib'}
-                    </Text>
-                  </View> */}
+
 
                   {showPicker && (
                     <DateTimePicker
@@ -377,7 +364,7 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
                       }
                       mode="time"
                       is24Hour={true}
-                      display="default"
+                      display="spinner"
                       onChange={onChangePicker}
                     />
                   )}
