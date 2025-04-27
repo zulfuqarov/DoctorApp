@@ -85,37 +85,36 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
   const [showPicker, setShowPicker] = useState(false);
   const [pickerType, setPickerType] = useState('start');
 
+ 
   const onChangePicker = (event, selectedDate) => {
-    // setShowPicker(Platform.OS === 'ios');
     if (event.type === 'dismissed') {
       setShowPicker(false);
       return;
     }
 
-
-
-    if (selectedDate) {
-      if (pickerType === 'start') {
-        setSelectedDays(prevState =>
-          prevState.map(day =>
-            day.workDate === showWrokTimeButton
-              ? { ...day, startTime: selectedDate }
-              : day
-          )
-        );
-      } else if (pickerType === 'end') {
-        setSelectedDays(prevState =>
-          prevState.map(day =>
-            day.workDate === showWrokTimeButton
-              ? { ...day, endTime: selectedDate }
-              : day
-          )
-        );
-      }
+    if (!selectedDate) {
+      setShowPicker(false);
+      return;
     }
+
+    const updatedDate = new Date(selectedDate);
+    setSelectedDays(prevState =>
+      prevState.map(day =>
+        day.workDate === showWrokTimeButton
+          ? {
+            ...day,
+            ...(pickerType === 'start'
+              ? { startTime: updatedDate }
+              : { endTime: updatedDate }),
+          }
+          : day
+      )
+    );
+
+    setShowPicker(false);
   };
 
-  const showDatePicker = (type, date) => {
+  const showDatePicker = (type) => {
     setPickerType(type);
     setShowPicker(true);
   };
@@ -277,8 +276,9 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
                       display: showWrokTimeButton === day.workDate ? "flex" : "none",
                     }}
                   >
+
                     <TouchableOpacity
-                      onPress={() => showDatePicker('start', day)}
+                      onPress={() => showDatePicker('start')}
                       style={{
                         backgroundColor: '#007BFF',
                         paddingVertical: 8,
@@ -316,7 +316,7 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                      onPress={() => showDatePicker('end', day)}
+                      onPress={() => showDatePicker('end')}
                       style={{
                         backgroundColor: '#007BFF',
                         paddingVertical: 8,
@@ -331,9 +331,9 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
                       <Text
                         style={{
                           color: '#fff',
-                          fontSize: wp('3.5%'), // Daha kiçik font ölçüsü
-                          fontWeight: '500', // Daha incə font
-                          textAlign: 'center', // Mətnin mərkəzə yerləşməsi
+                          fontSize: wp('3.5%'), 
+                          fontWeight: '500', 
+                          textAlign: 'center', 
                           paddingBottom: 7
                         }}
                       >
@@ -349,18 +349,19 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
                       >
                         {day.endTime
                           ? day.endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
-                          : '----'}
+                          : '----'
+                        }
                       </Text>
                     </TouchableOpacity>
+
                   </View>
 
 
                   {showPicker && (
                     <DateTimePicker
-                      value={
-                        pickerType === 'start'
-                          ? day.startTime || new Date()
-                          : day.endTime || new Date()
+                      value={pickerType === 'start'
+                        ? (selectedDays.find(day => day.workDate === showWrokTimeButton)?.startTime || new Date())
+                        : (selectedDays.find(day => day.workDate === showWrokTimeButton)?.endTime || new Date())
                       }
                       mode="time"
                       is24Hour={true}
