@@ -8,7 +8,8 @@ import {
   Animated,
   Easing,
   Dimensions,
-  Platform
+  Platform,
+  Button
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -22,9 +23,32 @@ import Logo from '../../assets/img/Logo.png';
 
 const { height } = Dimensions.get('window');
 
+
+const hekimIxtisaslari = [
+  "Kardioloq",
+  "Nevroloq",
+  "Dəri xəstəlikləri mütəxəssisi",
+  "Endokrinoloq",
+  "Pediatr",
+  "Terapevt",
+  "Ginekoloq",
+  "Uroloq",
+  "Oftalmoloq",
+  "Ortoped",
+  "Cərrah",
+  "Psixiatr",
+  "Stomatoloq",
+  "Radioloq",
+  "Fizioterapevt",
+  "Anestezioloq",
+  "Təbii terapiya mütəxəssisi",
+  "Mikrobioloq"
+];
+
 const DoctorProfile = ({ showModal, setShowModal }) => {
-  const [photo, setPhoto] = useState(null);
   const slideAnim = useRef(new Animated.Value(height)).current;
+
+  const [photo, setPhoto] = useState(null);
 
   const selectImage = () => {
     const options = {
@@ -82,18 +106,27 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
     }
   }
 
-  const [showPicker, setShowPicker] = useState(false);
+  const [showPicker, setShowPicker] = useState({
+    show: false,
+    date: null
+  });
   const [pickerType, setPickerType] = useState('start');
 
- 
+
   const onChangePicker = (event, selectedDate) => {
     if (event.type === 'dismissed') {
-      setShowPicker(false);
+      setShowPicker({
+        show: false,
+        date: null
+      });
       return;
     }
 
     if (!selectedDate) {
-      setShowPicker(false);
+      setShowPicker({
+        show: false,
+        date: null
+      });
       return;
     }
 
@@ -111,15 +144,39 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
       )
     );
 
-    setShowPicker(false);
+    setShowPicker({
+      show: false,
+      date: null
+    });
   };
 
-  const showDatePicker = (type) => {
+  const showDatePicker = (type, date) => {
     setPickerType(type);
-    setShowPicker(true);
+    setShowPicker({
+      show: true,
+      date: date.workDate
+    })
   };
 
-  console.log(selectedDays)
+  // doctor diploma upload start
+  const [diplomaPhoto, setDiplomaPhoto] = useState(null);
+  const selectImageDiplom = () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 1,
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('Kullanıcı iptal etti');
+      } else if (response.errorCode) {
+        console.log('Hata:', response.errorMessage);
+      } else {
+        const source = { uri: response.assets[0].uri };
+        setDiplomaPhoto(source);
+      }
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -176,22 +233,28 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
             <Text style={styles.label}>İxtisas</Text>
             <Picker
               mode="dropdown"
-              prompt="Prefix"
+              prompt="İxtisas"
               selectedValue={category}
               style={styles.picker}
               onValueChange={(itemValue) => setCategory(itemValue)}
+              dropdownIconColor="#007BFF"
             >
               <Picker.Item
                 label="Ixtisas Seçin"
                 value=""
                 color="gray"
               />
-              <Picker.Item label="050" value="050" />
+              {
+                hekimIxtisaslari.map((map, index) => (
+                  <Picker.Item label={map} value={map} key={index} />
+                ))
+              }
+              {/* <Picker.Item label="050" value="050" />
               <Picker.Item label="051" value="051" />
               <Picker.Item label="055" value="055" />
               <Picker.Item label="070" value="070" />
               <Picker.Item label="077" value="077" />
-              <Picker.Item label="099" value="099" />
+              <Picker.Item label="099" value="099" /> */}
             </Picker>
           </View>
 
@@ -235,148 +298,165 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
               ))}
             </View>
           </View>
+          {
+            selectedDays.length > 0 && <View style={styles.inputGroup}>
+              <Text style={styles.label}>İş Saat Aralıqları</Text>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>İş Saat Aralıqları</Text>
-
-            {
-              selectedDays && selectedDays.length > 0 &&
-              selectedDays.map((day, index) => (
-                <View
-                  key={index}
-                  style={{
-                    paddingTop: 20,
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#ccc',
-                    paddingBottom: 5,
-                  }}
-                >
-                  <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: '100%',
-                  }}>
-                    <Text style={[styles.label, { fontSize: wp('3.5%') }]}>{day.workDate}</Text>
-                    <TouchableOpacity
-                      onPress={() => showWrokTimeFunck(day.workDate)}
-                      style={[styles.label, { flexDirection: 'row', justifyContent: "center", alignItems: 'center' }]}>
-                      <Text style={{ fontSize: wp('4%'), marginRight: 8 }}>
-                        Vaxt seçin
-                      </Text>
-                      <Ionicons name={showWrokTimeButton === day.workDate ? "chevron-up" : 'chevron-down'} size={wp('4%')} color="#007BFF" />
-                    </TouchableOpacity>
-                  </View>
-
+              {
+                selectedDays && selectedDays.length > 0 &&
+                selectedDays.map((day, index) => (
                   <View
+                    key={index}
                     style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      padding: 20,
-                      display: showWrokTimeButton === day.workDate ? "flex" : "none",
+                      paddingTop: 20,
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#ccc',
+                      paddingBottom: 5,
                     }}
                   >
+                    <View style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: '100%',
+                    }}>
+                      <Text style={[styles.label, { fontSize: wp('3.5%') }]}>{day.workDate}</Text>
+                      <TouchableOpacity
+                        onPress={() => showWrokTimeFunck(day.workDate)}
+                        style={[styles.label, { flexDirection: 'row', justifyContent: "center", alignItems: 'center' }]}>
+                        <Text style={{ fontSize: wp('4%'), marginRight: 8 }}>
+                          Vaxt seçin
+                        </Text>
+                        <Ionicons name={showWrokTimeButton === day.workDate ? "chevron-up" : 'chevron-down'} size={wp('4%')} color="#007BFF" />
+                      </TouchableOpacity>
+                    </View>
 
-                    <TouchableOpacity
-                      onPress={() => showDatePicker('start')}
+                    <View
                       style={{
-                        backgroundColor: '#007BFF',
-                        paddingVertical: 8,
-                        paddingHorizontal: 16,
-                        borderRadius: 6,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        elevation: 2,
-                        width: wp('35%'),
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        padding: 20,
+                        display: showWrokTimeButton === day.workDate ? "flex" : "none",
                       }}
                     >
-                      <Text
-                        style={{
-                          color: '#fff',
-                          fontSize: wp('3.5%'),
-                          fontWeight: '500',
-                          textAlign: 'center',
-                          paddingBottom: 7
-                        }}
-                      >
-                        Başlama Saatı
-                      </Text>
-                      <Text
-                        style={{
-                          color: "#fff",
-                          fontSize: wp('3.5%'),
-                          fontWeight: '500',
-                          textAlign: 'center',
-                        }}
-                      >
-                        {day.startTime
-                          ? day.startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
-                          : '----'}
-                      </Text>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity
-                      onPress={() => showDatePicker('end')}
-                      style={{
-                        backgroundColor: '#007BFF',
-                        paddingVertical: 8,
-                        paddingHorizontal: 16,
-                        borderRadius: 6,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        elevation: 2,
-                        width: wp('35%'),
-                      }}
-                    >
-                      <Text
+                      <TouchableOpacity
+                        onPress={() => showDatePicker('start', day)}
                         style={{
-                          color: '#fff',
-                          fontSize: wp('3.5%'), 
-                          fontWeight: '500', 
-                          textAlign: 'center', 
-                          paddingBottom: 7
+                          backgroundColor: '#007BFF',
+                          paddingVertical: 8,
+                          paddingHorizontal: 16,
+                          borderRadius: 6,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          elevation: 2,
+                          width: wp('35%'),
                         }}
                       >
-                        Bitmə Saatı
-                      </Text>
-                      <Text
+                        <Text
+                          style={{
+                            color: '#fff',
+                            fontSize: wp('3.5%'),
+                            fontWeight: '500',
+                            textAlign: 'center',
+                            paddingBottom: 7
+                          }}
+                        >
+                          Başlama Saatı
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: wp('3.5%'),
+                            fontWeight: '500',
+                            textAlign: 'center',
+                          }}
+                        >
+                          {day.startTime
+                            ? day.startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                            : '----'}
+                        </Text>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        onPress={() => showDatePicker('end', day)}
                         style={{
-                          color: "#fff",
-                          fontSize: wp('3.5%'),
-                          fontWeight: '500',
-                          textAlign: 'center',
+                          backgroundColor: '#007BFF',
+                          paddingVertical: 8,
+                          paddingHorizontal: 16,
+                          borderRadius: 6,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          elevation: 2,
+                          width: wp('35%'),
                         }}
                       >
-                        {day.endTime
-                          ? day.endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
-                          : '----'
+                        <Text
+                          style={{
+                            color: '#fff',
+                            fontSize: wp('3.5%'),
+                            fontWeight: '500',
+                            textAlign: 'center',
+                            paddingBottom: 7
+                          }}
+                        >
+                          Bitmə Saatı
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: wp('3.5%'),
+                            fontWeight: '500',
+                            textAlign: 'center',
+                          }}
+                        >
+                          {day.endTime
+                            ? day.endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                            : '----'
+                          }
+                        </Text>
+                      </TouchableOpacity>
+
+                    </View>
+
+
+                    {showPicker.show && showPicker.date === day.workDate && (
+                      <DateTimePicker
+                        value={pickerType === 'start'
+                          ? (selectedDays.find(day => day.workDate === showWrokTimeButton)?.startTime || new Date())
+                          : (selectedDays.find(day => day.workDate === showWrokTimeButton)?.endTime || new Date())
                         }
-                      </Text>
-                    </TouchableOpacity>
+                        mode="time"
+                        is24Hour={true}
+                        display="spinner"
+                        onChange={onChangePicker}
+                        onCancel={() => setShowPicker({ show: false, date: null })}
+                      />
+                    )}
 
                   </View>
+                ))
+
+              }
+
+            </View>
+          }
 
 
-                  {showPicker && (
-                    <DateTimePicker
-                      value={pickerType === 'start'
-                        ? (selectedDays.find(day => day.workDate === showWrokTimeButton)?.startTime || new Date())
-                        : (selectedDays.find(day => day.workDate === showWrokTimeButton)?.endTime || new Date())
-                      }
-                      mode="time"
-                      is24Hour={true}
-                      display="spinner"
-                      onChange={onChangePicker}
-                    />
-                  )}
-
-                </View>
-              ))
-
-            }
-
+          {/* upload Dimplor Doctor */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Həkimlik Sənədi</Text>
+            <TouchableOpacity onPress={selectImageDiplom}>
+              <View style={{ backgroundColor: '#f4f4f4', borderRadius: 5, paddingHorizontal: 10,  }}>
+                <TextInput
+                  value={diplomaPhoto ? diplomaPhoto.uri : ''}
+                  placeholder="Sənədi seçin..."
+                  style={{ height: 50, fontSize: 14, color: '#333' }}
+                  editable={false} 
+                />
+              </View>
+            </TouchableOpacity>
           </View>
-
 
           <TouchableOpacity style={styles.submitButton} onPress={() => setShowModal(false)}>
             <Text style={styles.submitButtonText}>Təsdiqlə</Text>
