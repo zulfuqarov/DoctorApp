@@ -17,8 +17,8 @@ const Profile = () => {
         <ProfileTop showModal={showModal} shoModalFunc={shoModalFunc} />
       </View>
       <View style={styles.container}>
-        {/* <Personal setShowModal={setShowModal} showModal={showModal} /> */}
-        <DoctorProfile setShowModal={setShowModal} showModal={showModal} />
+        <Personal setShowModal={setShowModal} showModal={showModal} />
+        {/* <DoctorProfile setShowModal={setShowModal} showModal={showModal} /> */}
       </View>
     </SafeAreaView>
   )

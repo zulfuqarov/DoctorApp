@@ -8,13 +8,15 @@ import {
   Animated,
   Easing,
   Dimensions,
-  Platform
+  Platform,
+  Keyboard
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Toast from 'react-native-toast-message';
 
 import Logo from '../../assets/img/Logo.png';
 
@@ -41,6 +43,54 @@ const Personal = ({ showModal, setShowModal }) => {
       }
     });
   };
+
+  const [name, setName] = useState('')
+  const [surname, setSurname] = useState('')
+
+  const [error, setError] = useState()
+
+  const validate = () => {
+    const errorText = {}
+
+    if (!name) {
+      errorText.name = 'Adınızı daxil edin'
+    } else if (name.length < 3) {
+      errorText.name = 'Adınız 3 simvoldan az olmamalıdır'
+    }
+    if (!surname) {
+      errorText.surname = 'Soyadınızı daxil edin'
+    }
+
+    return errorText
+
+  }
+
+  const submitUserProfile = () => {
+    const errorText = validate()
+    setError(errorText)
+    if (Object.keys(errorText).length > 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Xətalı məlumat',
+        position: 'top',
+        visibilityTime: 2000,
+        autoHide: true,
+        bottomOffset: 50,
+      })
+      return
+    }
+    Toast.show({
+      type: 'success',
+      text1: 'Təbriklər',
+      text2: 'Həkim profiliniz uğurla yaradıldı',
+      position: 'top',
+      visibilityTime: 2000,
+      autoHide: true,
+      bottomOffset: 50,
+    })
+    Keyboard.dismiss()
+    setShowModal(false)
+  }
 
   useEffect(() => {
     Animated.timing(slideAnim, {
@@ -70,7 +120,7 @@ const Personal = ({ showModal, setShowModal }) => {
           extraScrollHeight={Platform.OS === 'ios' ? -80 : 0}
 
         >
-          
+          {/* image start */}
           <TouchableOpacity style={styles.imageView} onPress={selectImage}>
             <Image
               source={{
@@ -83,25 +133,33 @@ const Personal = ({ showModal, setShowModal }) => {
             <View style={styles.imageOverlay} />
             <Ionicons name="camera-outline" size={30} color="white" style={styles.imageIcon} />
           </TouchableOpacity>
-                
+
+          {/*name input start  */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Ad</Text>
+            <TextInput
+              value={name}
+              onChangeText={setName}
+              style={[styles.input, { borderColor: error?.name ? 'red' : 'rgba(244,244,246,1)' }]}
+              placeholder="Adınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+            />
+            {error?.name && <Text style={{ color: 'red', fontSize: wp("3.5%") }}>{error.name}</Text>}
+          </View>
+          {/* surname input start */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Soyad</Text>
             <TextInput
-              style={styles.input}
+              value={surname}
+              onChangeText={setSurname}
+              style={[styles.input, { borderColor: error?.surname ? 'red' : 'rgba(244,244,246,1)' }]}
               placeholder="Soyadınızı daxil edin"
               placeholderTextColor="rgba(178,188,201,1)"
             />
+            {error?.surname && <Text style={{ color: 'red', fontSize: wp("3.5%") }}>{error.surname}</Text>}
           </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Soyadınızı daxil edin"
-              placeholderTextColor="rgba(178,188,201,1)"
-            />
-          </View>
-                        
-          <TouchableOpacity style={styles.submitButton} onPress={() => setShowModal(false)}>
+
+          <TouchableOpacity style={styles.submitButton} onPress={() => submitUserProfile()}>
             <Text style={styles.submitButtonText}>Təsdiqlə</Text>
           </TouchableOpacity>
         </KeyboardAwareScrollView>

@@ -39,7 +39,7 @@ local.properties
 #
 node_modules/
 connection/
-
+firebase
 npm-debug.log
 yarn-error.log
 
