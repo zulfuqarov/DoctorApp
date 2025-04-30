@@ -9,7 +9,8 @@ import {
   Easing,
   Dimensions,
   Platform,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -18,7 +19,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
+import Toast from 'react-native-toast-message';
 import Logo from '../../assets/img/Logo.png';
 
 const { height } = Dimensions.get('window');
@@ -47,6 +48,11 @@ const hekimIxtisaslari = [
 
 const DoctorProfile = ({ showModal, setShowModal }) => {
   const slideAnim = useRef(new Animated.Value(height)).current;
+
+  const [name, setName] = useState("")
+  const [surname, setSurname] = useState("")
+  const [category, setCategory] = useState("")
+  const [details, setDetails] = useState("")
 
   const [photo, setPhoto] = useState(null);
 
@@ -81,7 +87,6 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
     });
   }, [showModal]);
 
-  const [category, setCategory] = useState("")
   const days = ['B.e', 'Ç.a', 'Ç', 'C.a', 'C', 'Ş', 'B'];
   const [selectedDays, setSelectedDays] = useState([]);
 
@@ -111,7 +116,6 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
     date: null
   });
   const [pickerType, setPickerType] = useState('start');
-
 
   const onChangePicker = (event, selectedDate) => {
     if (event.type === 'dismissed') {
@@ -158,6 +162,8 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
     })
   };
 
+
+
   // doctor diploma upload start
   const [diplomaPhoto, setDiplomaPhoto] = useState(null);
   const selectImageDiplom = () => {
@@ -177,6 +183,94 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
       }
     });
   };
+
+  const [error, setError] = useState(false)
+
+  const errorFunction = () => {
+    const errorText = {}
+
+    if (!name) {
+      errorText.name = "Adınızı daxil edin"
+    } else if (name.length < 3) {
+      errorText.name = "Adınız 3 simvoldan az ola bilməz"
+    }
+    if (!surname) {
+      errorText.surname = "Soyadınızı daxil edin"
+    } else if (surname.length < 3) {
+      errorText.surname = "Soyadınız 3 simvoldan az ola bilməz"
+    }
+    if (!category) {
+      errorText.category = "İxtisasınızı seçin"
+    }
+
+    if (details.length < 10) {
+      errorText.details = "Məlumatınız 10 simvoldan az ola bilməz"
+    }
+
+    if (selectedDays.length === 0) {
+      errorText.workDays = "İş günlərinizi seçin"
+    }
+
+    if (selectedDays.length > 0) {
+      selectedDays.map((day) => {
+        if (!day.startTime || !day.endTime) {
+          errorText.workTime = true
+        }
+      })
+    }
+
+    if (!diplomaPhoto) {
+      errorText.diploma = "Diplom şəkilinizi seçin"
+    }
+
+    // if (!photo) {
+    //   errorText.photo = "Şəkilinizi seçin"
+    // }
+
+
+    setError(errorText)
+
+    return errorText
+
+  }
+
+  const submitDoctorForm = () => {
+    const errorCheck = errorFunction()
+    if (Object.keys(errorCheck).length > 0) {
+      if (errorCheck.workTime) {
+        Toast.show({
+          type: 'error',
+          text1: 'Xətalı məlumat',
+          text2: 'İş saat aralığını seçin',
+          position: 'top',
+          visibilityTime: 2000,
+          autoHide: true,
+          bottomOffset: 50,
+        })
+        return
+      }
+      Toast.show({
+        type: 'error',
+        text1: 'Xətalı məlumat',
+        position: 'top',
+        visibilityTime: 2000,
+        autoHide: true,
+        bottomOffset: 50,
+      })
+      return
+    }
+    Toast.show({
+      type: 'success',
+      text1: 'Təbriklər',
+      text2: 'Həkim profiliniz uğurla yaradıldı',
+      position: 'top',
+      visibilityTime: 2000,
+      autoHide: true,
+      bottomOffset: 50,
+    })
+    setShowModal(false)
+  }
+
 
   return (
     <View style={styles.container}>
@@ -212,50 +306,62 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Ad</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { borderColor: error.name ? 'red' : 'rgba(244,244,246,1)' }]}
               placeholder="Adınızı daxil edin"
               placeholderTextColor="rgba(178,188,201,1)"
+              value={name}
+              onChangeText={text => setName(text)}
             />
+            {
+              error.name &&
+              <Text style={{ color: 'red', fontSize: wp('3.5%'), marginTop: 5 }}>{error.name} !</Text>
+            }
           </View>
           {/* surname Input */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Soyad</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { borderColor: error.surname ? 'red' : 'rgba(244,244,246,1)' }]}
               placeholder="Soyadınızı daxil edin"
               placeholderTextColor="rgba(178,188,201,1)"
+              value={surname}
+              onChangeText={text => setSurname(text)}
             />
+            {
+              error.surname &&
+              <Text style={{ color: 'red', fontSize: wp('3.5%'), marginTop: 5 }}>{error.surname} !</Text>
+            }
           </View>
 
 
           {/* category */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>İxtisas</Text>
-            <Picker
-              mode="dropdown"
-              prompt="İxtisas"
-              selectedValue={category}
-              style={styles.picker}
-              onValueChange={(itemValue) => setCategory(itemValue)}
-              dropdownIconColor="#007BFF"
-            >
-              <Picker.Item
-                label="Ixtisas Seçin"
-                value=""
-                color="gray"
-              />
-              {
-                hekimIxtisaslari.map((map, index) => (
-                  <Picker.Item label={map} value={map} key={index} />
-                ))
-              }
-              {/* <Picker.Item label="050" value="050" />
-              <Picker.Item label="051" value="051" />
-              <Picker.Item label="055" value="055" />
-              <Picker.Item label="070" value="070" />
-              <Picker.Item label="077" value="077" />
-              <Picker.Item label="099" value="099" /> */}
-            </Picker>
+            <View style={{ borderColor: error.category ? 'red' : 'rgba(244,244,246,1)', borderWidth: 1 }}>
+              <Picker
+                mode="dropdown"
+                prompt="İxtisas"
+                selectedValue={category}
+                style={styles.picker}
+                onValueChange={(itemValue) => setCategory(itemValue)}
+                dropdownIconColor="#007BFF"
+              >
+                <Picker.Item
+                  label="Ixtisas Seçin"
+                  value=""
+                  color="gray"
+                />
+                {
+                  hekimIxtisaslari.map((map, index) => (
+                    <Picker.Item label={map} value={map} key={index} />
+                  ))
+                }
+              </Picker>
+            </View>
+            {
+              error.category &&
+              <Text style={{ color: 'red', fontSize: wp('3.5%'), marginTop: 5 }}>{error.category} !</Text>
+            }
           </View>
 
           {/* details indput */}
@@ -267,10 +373,17 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
               style={[styles.input, {
                 height: 120,
                 textAlignVertical: 'top',
+                borderColor: error.details ? 'red' : 'rgba(244,244,246,1)',
               }]}
               placeholder="Ətraflı məlumat Yazın"
               placeholderTextColor="rgba(178,188,201,1)"
+              value={details}
+              onChangeText={text => setDetails(text)}
             />
+            {
+              error.details &&
+              <Text style={{ color: 'red', fontSize: wp('3.5%'), marginTop: 5 }}>{error.details} !</Text>
+            }
           </View>
 
           {/* work dealy */}
@@ -297,6 +410,10 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
                 </TouchableOpacity>
               ))}
             </View>
+            {
+              error.workDays &&
+              <Text style={{ color: 'red', fontSize: wp('3.5%'), marginTop: 5 }}>{error.workDays} !</Text>
+            }
           </View>
           {
             selectedDays.length > 0 && <View style={styles.inputGroup}>
@@ -310,8 +427,9 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
                     style={{
                       paddingTop: 20,
                       borderBottomWidth: 1,
-                      borderBottomColor: '#ccc',
+                      borderBottomColor: day.startTime && day.endTime ? 'rgba(244,244,246,1)' : 'red',
                       paddingBottom: 5,
+
                     }}
                   >
                     <View style={{
@@ -446,19 +564,29 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
           {/* upload Dimplor Doctor */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Həkimlik Sənədi</Text>
-            <TouchableOpacity onPress={selectImageDiplom}>
-              <View style={{ backgroundColor: '#f4f4f4', borderRadius: 5, paddingHorizontal: 10,  }}>
-                <TextInput
-                  value={diplomaPhoto ? diplomaPhoto.uri : ''}
-                  placeholder="Sənədi seçin..."
-                  style={{ height: 50, fontSize: 14, color: '#333' }}
-                  editable={false} 
-                />
+            <TouchableOpacity onPress={selectImageDiplom} activeOpacity={0.4}>
+              <View style={{ backgroundColor: '#f4f4f4', borderRadius: 5 }}>
+                <Text style={{
+                  height: 50,
+                  lineHeight: 50,
+                  paddingHorizontal: 10,
+                  fontSize: wp('4%'),
+                  color: diplomaPhoto ? '#333' : '#999',
+                  borderColor: error.diploma ? 'red' : 'rgba(244,244,246,1)',
+                  borderWidth: 1,
+                  borderRadius: 5,
+                }}>
+                  {diplomaPhoto ? diplomaPhoto.uri : 'Sənədi seçin...'}
+                </Text>
               </View>
             </TouchableOpacity>
+            {
+              error.diploma &&
+              <Text style={{ color: 'red', fontSize: wp('3.5%'), marginTop: 5 }}>{error.diploma} !</Text>
+            }
           </View>
 
-          <TouchableOpacity style={styles.submitButton} onPress={() => setShowModal(false)}>
+          <TouchableOpacity style={styles.submitButton} onPress={() => submitDoctorForm()}>
             <Text style={styles.submitButtonText}>Təsdiqlə</Text>
           </TouchableOpacity>
         </KeyboardAwareScrollView>
@@ -563,7 +691,6 @@ const styles = StyleSheet.create({
     width: "100%",
     borderWidth: 1,
     borderColor: 'rgba(244,244,246,1)',
-    borderRadius: 16,
     backgroundColor: 'rgba(250,250,252,1)',
     fontSize: wp('4%'),
     color: '#333',
