@@ -1,29 +1,33 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { createContext, useEffect } from 'react'
-import { authDb } from '../connections/firebaseConfig'
-
-// auth import
-import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
+import React, { createContext, useEffect,useState } from 'react'
+import auth from '@react-native-firebase/auth';
 
 export const DoctorContext = createContext()
 
 const ContextDoctor = ({ children }) => {
 
-    // useEffect(() => {
-    //     const unsubscribe = onAuthStateChanged(authDb, (user) => {
-    //         if (user) {
-    //             console.log("Giriş yapmış kullanıcı:", user.email);
-    //         } else {
-    //             console.log("Kullanıcı çıkış yapmış.");
-    //         }
-    //     });
-    //     return unsubscribe;
-    // }, []);
+    const [user, setUser] = useState("");
 
+    useEffect(() => {
+        const unsubscribe = auth().onAuthStateChanged(user => {
+            if (user) {
+                console.log('kulanici var', user);
+                setUser("yes")
+            } else {
+                console.log('kulanici yok');
+                setUser("no")
+            }
+        });
 
+        return () => unsubscribe();
+    }
+        , [])
 
     return (
-        <DoctorContext.Provider value={{}}>
+        <DoctorContext.Provider value={{
+            user,
+            
+        }}>
             {
                 children
             }
