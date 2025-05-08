@@ -4,10 +4,8 @@ import Personal from '../../components/Profile/Personal'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ProfileTop from '../../components/Profile/ProfileTop'
 import DoctorProfile from '../../components/Profile/DoctorProfile'
-import { DoctorContext } from '../../context/ContextDoctor'
 
 const Profile = () => {
-  const { user } = useContext(DoctorContext)
   const [showModal, setShowModal] = useState(false)
   const shoModalFunc = () => {
     setShowModal(!showModal)
@@ -18,12 +16,9 @@ const Profile = () => {
         <ProfileTop showModal={showModal} shoModalFunc={shoModalFunc} />
       </View>
       <View style={styles.container}>
-        <Personal setShowModal={setShowModal} showModal={showModal} />
-        {/* <DoctorProfile setShowModal={setShowModal} showModal={showModal} /> */}
+        {/* <Personal setShowModal={setShowModal} showModal={showModal} /> */}
+        <DoctorProfile setShowModal={setShowModal} showModal={showModal} />
       </View>
-      <Text>
-        {user}
-      </Text>
     </SafeAreaView>
   )
 }
