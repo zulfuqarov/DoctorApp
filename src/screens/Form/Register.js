@@ -70,7 +70,7 @@ const Register = () => {
                 await RegisterUser({
                   userName: "nebi",
                   userSurname: "nebi1234",
-                  email: "nebi4@gmail.com",
+                  email: "nebi7@gmail.com",
                   password: "nebi1234",
                   phone: `+994708115399`,
                 })

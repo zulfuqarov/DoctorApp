@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
+import { DoctorContext } from '../../context/ContextDoctor'
 
 const ProfileTop = ({ shoModalFunc, showModal }) => {
+    const { LogoutUser } = useContext(DoctorContext)
     return (
         <View style={styles.container}>
             <View style={styles.container2}>
@@ -14,7 +16,14 @@ const ProfileTop = ({ shoModalFunc, showModal }) => {
                     <Text style={styles.lastName}>Zulfuqarov</Text>
                 </View>
             </View>
-            <TouchableOpacity onPress={shoModalFunc} style={[styles.editButton, showModal && { backgroundColor: "#F87171" }]}>
+            <TouchableOpacity
+                onPress={
+                    // shoModalFunc
+                    () => {
+                        LogoutUser()
+                    }
+                }
+                style={[styles.editButton, showModal && { backgroundColor: "#F87171" }]}>
                 <Text style={styles.editButtonText}>{showModal ? "Ləvğ Et" : "Düzəliş"}</Text>
             </TouchableOpacity>
         </View>

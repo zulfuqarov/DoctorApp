@@ -1,61 +1,63 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { createContext, useEffect, useState } from 'react'
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut } from '@react-native-firebase/auth';
+// import firestore from '@react-native-firebase/firestore';
+import { getFirestore, collection, doc, setDoc } from '@react-native-firebase/firestore';
 
 import Welcom from '../screens/Welcom/Welcom';
 export const DoctorContext = createContext()
 
 const ContextDoctor = ({ children }) => {
     const auth = getAuth();
+    const db = getFirestore();
 
-    const [checkUser, setChekUser] = useState({
-        checkUser: false,
-        loading: true
-    })
+    const [checkUser, setChekUser] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const RegisterUser = async (data) => {
-        setChekUser({
-            checkUser: false,
-            loading: true
-        })
+        setLoading(true)
         try {
             const user = await createUserWithEmailAndPassword(auth, data.email, data.password);
             const userId = user.user.uid
 
-            await firestore().collection('users').doc(userId).set({
+            const userRef = doc(collection(db, 'users'), userId);
+            await setDoc(userRef, {
                 userName: data.userName,
                 userSurname: data.userSurname,
                 email: data.email,
                 password: data.password,
                 phone: data.phone,
-            });
-            // setChekUser({
-            //     checkUser: true,
-            //     loading: false
-            // })
+            })
+
+            // await firestore().collection('users').doc(userId).set({
+            //     userName: data.userName,
+            //     userSurname: data.userSurname,
+            //     email: data.email,
+            //     password: data.password,
+            //     phone: data.phone,
+            // });
+
         } catch (error) {
             console.log("Error creating user:", error);
-            setChekUser({
-                checkUser: false,
-                loading: false
-            })
+            setLoading(false)
+        }
+    }
+
+    const LogoutUser = async () => {
+        try {
+            await signOut(auth);
+        } catch (error) {
         }
     }
 
     const CheckLoginUser = () => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                setChekUser({
-                    checkUser: true,
-                    loading: false
-                })
+                setChekUser(true)
             } else {
-                setChekUser({
-                    checkUser: false,
-                    loading: false
-                })
+                setChekUser(false)
             }
+            setLoading(false)
         })
     }
 
@@ -65,7 +67,7 @@ const ContextDoctor = ({ children }) => {
 
 
     // Loading Screen Start
-    if (checkUser.loading) {
+    if (loading) {
         return (
             <Welcom />
         )
@@ -75,6 +77,7 @@ const ContextDoctor = ({ children }) => {
         <DoctorContext.Provider value={{
             checkUser,
             RegisterUser,
+            LogoutUser
         }}>
             {
                 children

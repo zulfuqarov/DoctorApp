@@ -37,7 +37,7 @@ const StackNavigate = () => {
       } */}
 
       {
-        checkUser.checkUser &&
+        checkUser &&
         <MyStack.Screen
           name="HomePage"
           component={BottomNavigation}
