@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import React, { useContext } from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -6,42 +6,48 @@ import Login from '../screens/Form/Login';
 import Register from '../screens/Form/Register';
 import BottomNavigation from './BottomNavigation';
 import DoctorDetails from '../screens/Home/DoctorDetails';
-import DetailsCutomHeader from '../components/DoctorDetails/DetailsCutomHeader';
+// import DetailsCutomHeader from '../components/DoctorDetails/DetailsCutomHeader';
 import AllDoctos from '../screens/Home/AllDoctors';
 import Message from '../screens/Chat/Message';
-
+import { DoctorContext } from '../context/ContextDoctor';
+// import Welcome from '../screens/Welcom/Welcom';
 const MyStack = createStackNavigator()
 
 
 const StackNavigate = () => {
 
+  const { checkUser } = useContext(DoctorContext)
 
   return (
     <MyStack.Navigator
     >
 
-      {/* {checkAuthLoading &&
-                <MyStack.Screen
-                    name="Welcome"
-                    component={Welcome}
-                    options={{
-                        title: "Giriş",
-                        headerTitleAlign: "center",
-                        headerLeft: () => null,
-                        gestureEnabled: false,
-                        headerShown: false
-                    }}
-                />
-            } */}
+      {/* {checkUser.loading &&
+        <MyStack.Screen
+          name="Welcome"
+          component={Welcome}
+          options={{
+            title: "Giriş",
+            headerTitleAlign: "center",
+            headerLeft: () => null,
+            gestureEnabled: false,
+            headerShown: false
+          }}
+        />
+      } */}
 
-      <MyStack.Screen
-        name="HomePage"
-        component={BottomNavigation}
-        options={{
-          gestureEnabled: false,
-          headerShown: false,
-        }}
-      />
+      {
+        checkUser.checkUser &&
+        <MyStack.Screen
+          name="HomePage"
+          component={BottomNavigation}
+          options={{
+            gestureEnabled: false,
+            headerShown: false,
+          }}
+        />
+      }
+
 
       <MyStack.Screen
         name="Login"

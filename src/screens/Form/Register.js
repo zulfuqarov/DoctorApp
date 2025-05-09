@@ -1,11 +1,13 @@
 import { StyleSheet, Image, Text, TextInput, View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from "@react-navigation/native";
 import GooglePng from "../../assets/img/Google.png";
 import IcloudPng from "../../assets/img/Facebook.png";
 import FacebookPng from "../../assets/img/Apple.png";
+import { DoctorContext } from "../../context/ContextDoctor";
 const Register = () => {
+  const { RegisterUser } = useContext(DoctorContext)
   const { navigate } = useNavigation();
   const [selectedPrefix, setSelectedPrefix] = useState("050");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -63,7 +65,19 @@ const Register = () => {
                 </View>
               </View>
             </View>
-            <TouchableOpacity style={styles.Button}>
+            <TouchableOpacity style={styles.Button}
+              onPress={async () => {
+                await RegisterUser({
+                  userName: "nebi",
+                  userSurname: "nebi1234",
+                  email: "nebi4@gmail.com",
+                  password: "nebi1234",
+                  phone: `+994708115399`,
+                })
+                // Handle registration logic here
+                // alert("Qeydiyyat tamamlandı!");
+              }}
+            >
               <Text style={styles.SignIn}>Qeydiyyatdan keç</Text>
             </TouchableOpacity>
             <View style={styles.Login}>
@@ -73,6 +87,8 @@ const Register = () => {
               </TouchableOpacity>
             </View>
           </View>
+
+          {/* login email,facebook,icloud */}
           <View style={styles.containerIcon}>
             {/* Google Login Button */}
             <TouchableOpacity style={styles.buttonIcon} onPress={() => alert('Google ile giriş yapıldı!')}>
@@ -106,9 +122,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-evenly",
-    paddingLeft: 16, 
-    paddingRight: 16, 
-    paddingBottom: 16, 
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingBottom: 16,
     backgroundColor: "#fff",
   },
   inputGroup: {
@@ -195,7 +211,7 @@ const styles = StyleSheet.create({
   button: {
     marginVertical: 10,
     padding: 10,
-    backgroundColor: '#3b5998', 
+    backgroundColor: '#3b5998',
     borderRadius: 5,
   },
 
