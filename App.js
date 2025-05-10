@@ -5,6 +5,7 @@ import React from 'react';
 import Toast from 'react-native-toast-message';
 import { StatusBar, Text,View } from 'react-native';
 import { enableScreens } from 'react-native-screens';
+
 enableScreens();
 const App = () => {
 

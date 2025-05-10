@@ -10,7 +10,38 @@ const Register = () => {
   const { RegisterUser } = useContext(DoctorContext)
   const { navigate } = useNavigation();
   const [selectedPrefix, setSelectedPrefix] = useState("050");
-  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const [registerData, setRegisterData] = useState({
+    userName: "",
+    userSurname: "",
+    email: "",
+    password: "",
+    phone: "",
+  });
+  const handleInputChange = (name, value) => {
+    setRegisterData({ ...registerData, [name]: value });
+  };
+
+  const handlePhoneNumberChange = (value) => {
+    handleInputChange("phone", `+994${selectedPrefix}${value}`);
+  };
+
+  const handleRegister = async () => {
+    try {
+      await RegisterUser(registerData);
+    } catch (error) {
+      console.error("Registration error:", error);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!registerData.userName || !registerData.userSurname || !registerData.email || !registerData.password || !registerData.phone) {
+      alert("Bütün sahələri doldurun");
+      return;
+    }
+    handleRegister();
+  };
+
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="height">
@@ -21,19 +52,42 @@ const Register = () => {
             <View>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Ad</Text>
-                <TextInput style={styles.input} placeholder="Adınızı daxil edin" placeholderTextColor="rgba(178,188,201,1)" />
+                <TextInput
+
+                  style={styles.input}
+                  placeholder="Adınızı daxil edin"
+                  placeholderTextColor="rgba(178,188,201,1)"
+                  value={registerData.userName}
+                  onChangeText={(text) => handleInputChange("userName", text)}
+                />
               </View>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Soyad</Text>
-                <TextInput style={styles.input} placeholder="Soyadınızı daxil edin" placeholderTextColor="rgba(178,188,201,1)" />
+                <TextInput
+                  value={registerData.userSurname}
+                  onChangeText={(text) => handleInputChange("userSurname", text)}
+                  style={styles.input}
+                  placeholder="Soyadınızı daxil edin"
+                  placeholderTextColor="rgba(178,188,201,1)"
+                />
               </View>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Email ünvan</Text>
-                <TextInput style={styles.input} placeholder="Email ünvanınızı daxil edin" placeholderTextColor="rgba(178,188,201,1)" keyboardType="email-address" />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email ünvanınızı daxil edin"
+                  placeholderTextColor="rgba(178,188,201,1)"
+                  keyboardType="email-address"
+                  value={registerData.email}
+                  onChangeText={(text) => handleInputChange("email", text)}
+                />
               </View>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Şifrəniz</Text>
-                <TextInput style={styles.input} placeholder="Şifrənizi daxil edin" placeholderTextColor="rgba(178,188,201,1)" secureTextEntry />
+                <TextInput style={styles.input} placeholder="Şifrənizi daxil edin" placeholderTextColor="rgba(178,188,201,1)" secureTextEntry
+                  value={registerData.password}
+                  onChangeText={(text) => handleInputChange("password", text)}
+                />
               </View>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Telefon nömrəniz</Text>
@@ -59,23 +113,15 @@ const Register = () => {
                     placeholderTextColor="rgba(178,188,201,1)"
                     keyboardType="number-pad"
                     maxLength={7}
-                    onChangeText={setPhoneNumber}
-                    value={phoneNumber}
+                    value={registerData.phone.slice(7)}
+                    onChangeText={(text) => handlePhoneNumberChange(text)}
                   />
                 </View>
               </View>
             </View>
             <TouchableOpacity style={styles.Button}
-              onPress={async () => {
-                await RegisterUser({
-                  userName: "nebi",
-                  userSurname: "nebi1234",
-                  email: "nebi7@gmail.com",
-                  password: "nebi1234",
-                  phone: `+994708115399`,
-                })
-                // Handle registration logic here
-                // alert("Qeydiyyat tamamlandı!");
+              onPress={() => {
+                handleSubmit();
               }}
             >
               <Text style={styles.SignIn}>Qeydiyyatdan keç</Text>

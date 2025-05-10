@@ -2,8 +2,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { createContext, useEffect, useState } from 'react'
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut } from '@react-native-firebase/auth';
 // import firestore from '@react-native-firebase/firestore';
-import { getFirestore, collection, doc, setDoc } from '@react-native-firebase/firestore';
-
+import { getFirestore, collection, doc, setDoc, getDoc,onSnapshot } from '@react-native-firebase/firestore';
+import Toast from 'react-native-toast-message';
 import Welcom from '../screens/Welcom/Welcom';
 export const DoctorContext = createContext()
 
@@ -25,17 +25,19 @@ const ContextDoctor = ({ children }) => {
                 userName: data.userName,
                 userSurname: data.userSurname,
                 email: data.email,
-                password: data.password,
                 phone: data.phone,
+                role: "user",
             })
 
-            // await firestore().collection('users').doc(userId).set({
-            //     userName: data.userName,
-            //     userSurname: data.userSurname,
-            //     email: data.email,
-            //     password: data.password,
-            //     phone: data.phone,
-            // });
+
+            Toast.show({
+                type: 'success',
+                position: 'top',
+                text1: 'Qeydiyyat tamamlandı!',
+                text2: 'İstifadəçi uğurla yaradıldı!',
+                visibilityTime: 2000,
+                autoHide: true,
+            });
 
         } catch (error) {
             console.log("Error creating user:", error);
@@ -50,16 +52,65 @@ const ContextDoctor = ({ children }) => {
         }
     }
 
+    // const CheckLoginUser = () => {
+    //     onAuthStateChanged(auth, (user) => {
+    //         if (user) {
+    //             setChekUser(true)
+    //         } else {
+    //             setChekUser(false)
+    //         }
+    //         setLoading(false)
+    //     })
+    // }
+
+
+    // const CheckLoginUser = () => {
+    //     onAuthStateChanged(auth, async (user) => {
+    //         if (user) {
+    //             const userDocRef = doc(db, 'users', user.uid);
+    //             const userSnap = await getDoc(userDocRef);
+    //             if (userSnap.exists()) {
+    //                 const userData = userSnap.data();
+    //                 setChekUser(true);
+    //             } else {
+    //                 console.log("User document not found in Firestore!");
+    //                 setChekUser(false);
+    //             }
+    //         } else {
+    //             setChekUser(false)
+    //         }
+    //         setLoading(false)
+    //     })
+    // }
+
+
     const CheckLoginUser = () => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                setChekUser(true)
+                const userDocRef = doc(db, 'users', user.uid);
+    
+                const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        setChekUser(true);
+                    } else {
+                        console.log("User document not found in Firestore!");
+                        setChekUser(false);
+                    }
+                    setLoading(false);
+                }, (error) => {
+                    console.log("Snapshot error:", error);
+                    setLoading(false);
+                });
+    
+                return () => unsubscribe();
             } else {
-                setChekUser(false)
+                setChekUser(false);
+                setLoading(false);
             }
-            setLoading(false)
-        })
-    }
+        });
+    };
+    
+
 
     useEffect(() => {
         CheckLoginUser()
