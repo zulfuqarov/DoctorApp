@@ -1,11 +1,13 @@
 import { StyleSheet, Image, Text, TextInput, View, KeyboardAvoidingView, Button, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import GooglePng from "../../assets/img/Google.png";
 import IcloudPng from "../../assets/img/Facebook.png";
 import FacebookPng from "../../assets/img/Apple.png";
 import Line from "../../assets/img/Divider-ine-copy.png"
 import { useNavigation } from "@react-navigation/native";
+import { DoctorContext } from "../../context/ContextDoctor";
 const Login = () => {
+  const { signInUser } = useContext(DoctorContext)
   const { navigate } = useNavigation()
   return (
     <KeyboardAvoidingView
@@ -44,7 +46,11 @@ const Login = () => {
               </View>
             </View>
           </View>
-          <TouchableOpacity style={styles.Button}>
+          <TouchableOpacity
+            onPress={() => {
+              signInUser("nebi@gmail.com", "nebi1234")
+            }}
+            style={styles.Button}>
             <Text style={styles.SignIn}>Continue</Text>
           </TouchableOpacity>
           <View style={styles.Login}>

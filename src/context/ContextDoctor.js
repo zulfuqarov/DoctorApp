@@ -1,19 +1,23 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { createContext, useEffect, useState } from 'react'
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut } from '@react-native-firebase/auth';
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@react-native-firebase/auth';
 // import firestore from '@react-native-firebase/firestore';
-import { getFirestore, collection, doc, setDoc, getDoc,onSnapshot } from '@react-native-firebase/firestore';
+import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot } from '@react-native-firebase/firestore';
 import Toast from 'react-native-toast-message';
 import Welcom from '../screens/Welcom/Welcom';
+import { useNavigation } from '@react-navigation/native';
 export const DoctorContext = createContext()
 
 const ContextDoctor = ({ children }) => {
+    const { navigate } = useNavigation()
     const auth = getAuth();
     const db = getFirestore();
 
     const [checkUser, setChekUser] = useState(false)
+    const [userData,setUserData] = useState(null)
     const [loading, setLoading] = useState(true)
 
+    // register start
     const RegisterUser = async (data) => {
         setLoading(true)
         try {
@@ -44,72 +48,35 @@ const ContextDoctor = ({ children }) => {
             setLoading(false)
         }
     }
-
+    // sigin start
+    const signInUser = async (email, password) => {
+        setLoading(true)
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            console.error('Giriş zamanı xəta:', error.message);
+        }
+    };
+    // logout start
     const LogoutUser = async () => {
         try {
             await signOut(auth);
         } catch (error) {
         }
     }
-
-    // const CheckLoginUser = () => {
-    //     onAuthStateChanged(auth, (user) => {
-    //         if (user) {
-    //             setChekUser(true)
-    //         } else {
-    //             setChekUser(false)
-    //         }
-    //         setLoading(false)
-    //     })
-    // }
-
-
-    // const CheckLoginUser = () => {
-    //     onAuthStateChanged(auth, async (user) => {
-    //         if (user) {
-    //             const userDocRef = doc(db, 'users', user.uid);
-    //             const userSnap = await getDoc(userDocRef);
-    //             if (userSnap.exists()) {
-    //                 const userData = userSnap.data();
-    //                 setChekUser(true);
-    //             } else {
-    //                 console.log("User document not found in Firestore!");
-    //                 setChekUser(false);
-    //             }
-    //         } else {
-    //             setChekUser(false)
-    //         }
-    //         setLoading(false)
-    //     })
-    // }
-
-
+    // Check Login User Start
     const CheckLoginUser = () => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                const userDocRef = doc(db, 'users', user.uid);
-    
-                const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
-                    if (docSnap.exists()) {
-                        setChekUser(true);
-                    } else {
-                        console.log("User document not found in Firestore!");
-                        setChekUser(false);
-                    }
-                    setLoading(false);
-                }, (error) => {
-                    console.log("Snapshot error:", error);
-                    setLoading(false);
-                });
-    
-                return () => unsubscribe();
-            } else {
-                setChekUser(false);
-                setLoading(false);
+                setChekUser(true)
             }
-        });
-    };
-    
+            else {
+                setChekUser(false)
+            }
+            setLoading(false)
+        })
+    }
+
 
 
     useEffect(() => {
@@ -128,7 +95,9 @@ const ContextDoctor = ({ children }) => {
         <DoctorContext.Provider value={{
             checkUser,
             RegisterUser,
-            LogoutUser
+            signInUser,
+            LogoutUser,
+
         }}>
             {
                 children
