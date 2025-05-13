@@ -10,19 +10,18 @@ import DoctorDetails from '../screens/Home/DoctorDetails';
 import AllDoctos from '../screens/Home/AllDoctors';
 import Message from '../screens/Chat/Message';
 import { DoctorContext } from '../context/ContextDoctor';
-// import Welcome from '../screens/Welcom/Welcom';
+import Welcome from '../screens/Welcom/Welcom';
 const MyStack = createStackNavigator()
 
 
 const StackNavigate = () => {
 
-  const { checkUser } = useContext(DoctorContext)
+  const { checkUser, userData } = useContext(DoctorContext)
 
   return (
     <MyStack.Navigator
     >
 
-      {/* {checkUser.loading &&
         <MyStack.Screen
           name="Welcome"
           component={Welcome}
@@ -31,13 +30,11 @@ const StackNavigate = () => {
             headerTitleAlign: "center",
             headerLeft: () => null,
             gestureEnabled: false,
-            headerShown: false
+            headerShown: false,
+            animationEnabled: false, // ✅ animasiyanı deaktiv edir
           }}
         />
-      } */}
-
-      {
-        checkUser &&
+      
         <MyStack.Screen
           name="HomePage"
           component={BottomNavigation}
@@ -46,9 +43,7 @@ const StackNavigate = () => {
             headerShown: false,
           }}
         />
-      }
-
-
+      
       <MyStack.Screen
         name="Login"
         component={Login}
