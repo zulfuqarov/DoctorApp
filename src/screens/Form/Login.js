@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
     height: 24,
     marginLeft: 10,
   },
-
   Button: {
     display: "flex",
     flexDirection: "column",

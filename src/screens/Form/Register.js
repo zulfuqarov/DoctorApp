@@ -52,42 +52,50 @@ const Register = () => {
             <View>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Ad</Text>
-                <TextInput
+                <View style={styles.inputField}>
+                  <TextInput
 
-                  style={styles.input}
-                  placeholder="Adınızı daxil edin"
-                  placeholderTextColor="rgba(178,188,201,1)"
-                  value={registerData.userName}
-                  onChangeText={(text) => handleInputChange("userName", text)}
-                />
+                    style={styles.input}
+                    placeholder="Adınızı daxil edin"
+                    placeholderTextColor="rgba(178,188,201,1)"
+                    value={registerData.userName}
+                    onChangeText={(text) => handleInputChange("userName", text)}
+                  />
+                </View>
               </View>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Soyad</Text>
-                <TextInput
-                  value={registerData.userSurname}
-                  onChangeText={(text) => handleInputChange("userSurname", text)}
-                  style={styles.input}
-                  placeholder="Soyadınızı daxil edin"
-                  placeholderTextColor="rgba(178,188,201,1)"
-                />
+                <View style={styles.inputField}>
+                  <TextInput
+                    value={registerData.userSurname}
+                    onChangeText={(text) => handleInputChange("userSurname", text)}
+                    style={styles.input}
+                    placeholder="Soyadınızı daxil edin"
+                    placeholderTextColor="rgba(178,188,201,1)"
+                  />
+                </View>
               </View>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Email ünvan</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Email ünvanınızı daxil edin"
-                  placeholderTextColor="rgba(178,188,201,1)"
-                  keyboardType="email-address"
-                  value={registerData.email}
-                  onChangeText={(text) => handleInputChange("email", text)}
-                />
+                <View style={styles.inputField}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Email ünvanınızı daxil edin"
+                    placeholderTextColor="rgba(178,188,201,1)"
+                    keyboardType="email-address"
+                    value={registerData.email}
+                    onChangeText={(text) => handleInputChange("email", text)}
+                  />
+                </View>
               </View>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Şifrəniz</Text>
-                <TextInput style={styles.input} placeholder="Şifrənizi daxil edin" placeholderTextColor="rgba(178,188,201,1)" secureTextEntry
-                  value={registerData.password}
-                  onChangeText={(text) => handleInputChange("password", text)}
-                />
+                <View style={styles.inputField}>
+                  <TextInput style={styles.input} placeholder="Şifrənizi daxil edin" placeholderTextColor="rgba(178,188,201,1)" secureTextEntry
+                    value={registerData.password}
+                    onChangeText={(text) => handleInputChange("password", text)}
+                  />
+                </View>
               </View>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Telefon nömrəniz</Text>
@@ -168,8 +176,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-evenly",
-    paddingLeft: 16,
-    paddingRight: 16,
     paddingBottom: 16,
     backgroundColor: "#fff",
   },
@@ -186,14 +192,20 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   input: {
+    flex: 1,
+    fontSize: 14, // Font boyutunu küçülttük
+    color: "#333",
+  },
+  inputField: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
-    padding: 10,
+    padding: 7, // Paddingi küçülttük
     borderWidth: 1,
     borderColor: "rgba(244,244,246,1)",
     borderRadius: 16,
     backgroundColor: "rgba(250,250,252,1)",
-    fontSize: 14,
-    color: "#333",
   },
   phoneInputContainer: {
     flexDirection: "row",
