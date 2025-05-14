@@ -13,14 +13,13 @@ const ContextDoctor = ({ children }) => {
     const auth = getAuth();
     const db = getFirestore();
 
-    const [checkUser, setChekUser] = useState(false)
+    // const [checkUser, setChekUser] = useState(false)
     const [userUid, setuserUid] = useState(null)
     const [userData, setUserData] = useState()
-    const [loading, setLoading] = useState(true)
+    // const [loading, setLoading] = useState(true)
 
     // register start
     const RegisterUser = async (data) => {
-        setLoading(true)
         navigation.reset({
             index: 0,
             routes: [{ name: 'Welcome' }],
@@ -38,9 +37,6 @@ const ContextDoctor = ({ children }) => {
                 role: "user",
             })
 
-            setLoading(false)
-            setChekUser(true)
-
             Toast.show({
                 type: 'success',
                 position: 'top',
@@ -52,7 +48,18 @@ const ContextDoctor = ({ children }) => {
 
         } catch (error) {
             console.log("Error creating user:", error);
-            setLoading(false)
+            Toast.show({
+                type: 'error',
+                position: 'top',
+                text1: 'Qeydiyyat zamanı xəta!',
+                text2: 'İstifadəçi yaradıla bilmədi!',
+                visibilityTime: 2000,
+                autoHide: true,
+            });
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+            });
         }
     }
     // sigin start
@@ -63,6 +70,14 @@ const ContextDoctor = ({ children }) => {
         });
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            Toast.show({
+                type: 'success',
+                position: 'top',
+                text1: 'Giriş tamamlandı!',
+                text2: 'İstifadəçi uğurla daxil oldu!',
+                visibilityTime: 2000,
+                autoHide: true,
+            });
         } catch (error) {
             console.error('Giriş zamanı xəta:', error.message);
         }
@@ -72,7 +87,16 @@ const ContextDoctor = ({ children }) => {
         try {
             await signOut(auth);
             setuserUid(null)
+            Toast.show({
+                type: 'success',
+                position: 'top',
+                text1: 'Çıxış tamamlandı!',
+                text2: 'İstifadəçi uğurla çıxdı!',
+                visibilityTime: 2000,
+                autoHide: true,
+            });
         } catch (error) {
+            console.error('Çıxış zamanı xəta:', error.message);
         }
     }
 
@@ -102,24 +126,21 @@ const ContextDoctor = ({ children }) => {
             });
         });
 
-        return unsubscribe; // cleanup için geri döndür
+        return unsubscribe;
     };
 
     // Check Login User Start
     const CheckLoginUser = () => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                setChekUser(true)
                 setuserUid(user.uid)
             }
             else {
-                setChekUser(false)
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'Login' }],
                 });
             }
-            setLoading(false)
         })
     }
 
@@ -137,17 +158,9 @@ const ContextDoctor = ({ children }) => {
     }, [userUid])
 
 
-    // Loading Screen Start
-    // if (loading && !userData) {
-    //     return (
-    //         <Welcom />
-    //     )
-    // }
-
     return (
         <DoctorContext.Provider value={{
             userData,
-            checkUser,
             RegisterUser,
             signInUser,
             LogoutUser,

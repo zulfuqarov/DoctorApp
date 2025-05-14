@@ -16,7 +16,6 @@ const MyStack = createStackNavigator()
 
 const StackNavigate = () => {
 
-  const { checkUser, userData } = useContext(DoctorContext)
 
   return (
     <MyStack.Navigator
