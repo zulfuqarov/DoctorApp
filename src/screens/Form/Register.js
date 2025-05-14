@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-evenly",
-    paddingBottom: 16,
+    paddingBottom: 36,
     backgroundColor: "#fff",
   },
   inputGroup: {
