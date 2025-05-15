@@ -78,8 +78,21 @@ const ContextDoctor = ({ children }) => {
                 visibilityTime: 2000,
                 autoHide: true,
             });
+            console.log("Giriş uğurlu:");
         } catch (error) {
             console.error('Giriş zamanı xəta:', error.message);
+            Toast.show({
+                type: 'error',
+                position: 'top',
+                text1: 'Giriş zamanı xəta!',
+                text2: 'Email və ya şifrə səhvdir!',
+                visibilityTime: 2000,
+                autoHide: true,
+            });
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+            });
         }
     };
     // logout start
@@ -100,10 +113,18 @@ const ContextDoctor = ({ children }) => {
         }
     }
 
+    const autoLogout = async () => {
+        try {
+            await signOut(auth);
+            setuserUid(null)
+        } catch (error) {
+            console.error('Çıxış zamanı xəta:', error.message);
+        }
+    }
+
     // get user data start
     const getUserData = (userId) => {
         const docRef = doc(db, 'users', userId);
-
         const unsubscribe = onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
                 setUserData(docSnap.data());
@@ -113,20 +134,15 @@ const ContextDoctor = ({ children }) => {
                 });
             } else {
                 console.log("No such document!");
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'Login' }],
-                });
+                autoLogout()
             }
         }, (error) => {
             console.log("Error getting user data:", error);
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'Login' }],
-            });
+            autoLogout()
+
         });
 
-        return unsubscribe;
+
     };
 
     // Check Login User Start
