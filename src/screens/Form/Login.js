@@ -16,6 +16,7 @@ import { DoctorContext } from "../../context/ContextDoctor";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Toast from "react-native-toast-message";
+
 const Login = () => {
   const { signInUser } = useContext(DoctorContext);
   const { navigate } = useNavigation();
@@ -118,8 +119,6 @@ const Login = () => {
           <Text style={styles.SignIn}>Continue</Text>
         </TouchableOpacity>
       </View>
-
-
 
       <View style={styles.Login}>
         <Text style={styles.text}>Hesabınız yoxdur? </Text>
