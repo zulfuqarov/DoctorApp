@@ -6,7 +6,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import GooglePng from "../../assets/img/Google.png";
 import IcloudPng from "../../assets/img/Facebook.png";
 import FacebookPng from "../../assets/img/Apple.png";
@@ -15,10 +15,34 @@ import { useNavigation } from "@react-navigation/native";
 import { DoctorContext } from "../../context/ContextDoctor";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import Toast from "react-native-toast-message";
 const Login = () => {
   const { signInUser } = useContext(DoctorContext);
   const { navigate } = useNavigation();
+  const [error, setError] = useState({})
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+
+  const errorFunction = () => {
+    const errorText = {}
+
+    if (email === "") {
+      errorText.email = "Email ünvanınızı daxil edin"
+    } else if (!email.includes("@")) {
+      errorText.email = "Email ünvanınızı düzgün daxil edin"
+    }
+
+    if (password === "") {
+      errorText.password = "Şifrənizi daxil edin"
+    }
+
+
+    setError(errorText)
+    return errorText
+
+  }
 
   return (
     <KeyboardAwareScrollView
@@ -31,24 +55,32 @@ const Login = () => {
       <View>
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Email ünvan</Text>
-          <View style={styles.inputField}>
+          <View style={[styles.inputField, { borderColor: error.email ? 'red' : 'rgba(244,244,246,1)' }]}>
             <TextInput
               style={styles.input}
               placeholder="Email ünvanınızı daxil edin"
               placeholderTextColor="rgba(178,188,201,1)"
               keyboardType="email-address"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
             />
           </View>
+          {
+            error.email &&
+            <Text style={{ color: 'red', fontSize: wp('3.5%'), marginTop: 7, marginLeft: 7 }}>{error.email} !</Text>
+          }
         </View>
 
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Şifrəniz</Text>
-          <View style={styles.inputField}>
+          <View style={[styles.inputField, { borderColor: error.password ? 'red' : 'rgba(244,244,246,1)' }]}>
             <TextInput
               style={styles.input}
               placeholder="Şifrənizi daxil edin"
               placeholderTextColor="rgba(178,188,201,1)"
               secureTextEntry
+              value={password}
+              onChangeText={(text) => setPassword(text)}
             />
             <Image
               style={styles.icon}
@@ -57,11 +89,29 @@ const Login = () => {
               }}
             />
           </View>
+          {
+            error.password &&
+            <Text style={{ color: 'red', fontSize: wp('3.5%'), marginTop: 7, marginLeft: 7 }}>{error.password} !</Text>
+          }
         </View>
 
         <TouchableOpacity
           onPress={() => {
-            signInUser("nebi@gmail.com", "nebi1234");
+            const errorCheck = errorFunction()
+
+            if (Object.keys(errorCheck).length === 0) {
+              signInUser(email, password)
+            } else {
+              Toast.show({
+                type: 'error',
+                position: 'top',
+                text1: 'Zəhmət olmasa, email ünvanınızı və şifrənizi düzgün daxil edin.!',
+                visibilityTime: 2000,
+                autoHide: true,
+              });
+              console.log(errorCheck.email || errorCheck.password);
+            }
+
           }}
           style={styles.Button}
         >
@@ -131,7 +181,6 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: "rgba(244,244,246,1)",
     borderRadius: 16,
     backgroundColor: "rgba(250,250,252,1)",
   },

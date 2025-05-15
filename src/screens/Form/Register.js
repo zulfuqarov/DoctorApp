@@ -6,6 +6,8 @@ import GooglePng from "../../assets/img/Google.png";
 import IcloudPng from "../../assets/img/Facebook.png";
 import FacebookPng from "../../assets/img/Apple.png";
 import { DoctorContext } from "../../context/ContextDoctor";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 const Register = () => {
   const { RegisterUser } = useContext(DoctorContext)
   const { navigate } = useNavigation();
@@ -195,15 +197,15 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14, // Font boyutunu küçülttük
     color: "#333",
+    height: hp("5%"),
+
   },
   inputField: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    padding: 7, // Paddingi küçülttük
+    paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: "rgba(244,244,246,1)",
     borderRadius: 16,
     backgroundColor: "rgba(250,250,252,1)",
   },

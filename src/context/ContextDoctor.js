@@ -80,7 +80,7 @@ const ContextDoctor = ({ children }) => {
             });
             console.log("Giriş uğurlu:");
         } catch (error) {
-            console.error('Giriş zamanı xəta:', error.message);
+            // console.error('Giriş zamanı xəta:', error.message);
             Toast.show({
                 type: 'error',
                 position: 'top',
