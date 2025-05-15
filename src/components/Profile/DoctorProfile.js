@@ -285,7 +285,6 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
           enableOnAndroid={true}
           keyboardShouldPersistTaps="handled"
           extraScrollHeight={Platform.OS === 'ios' ? -80 : 0}
-
         >
 
           <TouchableOpacity style={styles.imageView} onPress={selectImage}>

@@ -1,109 +1,118 @@
-import { StyleSheet, Image, Text, TextInput, View, KeyboardAvoidingView, Button, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import React, { useContext } from "react";
 import GooglePng from "../../assets/img/Google.png";
 import IcloudPng from "../../assets/img/Facebook.png";
 import FacebookPng from "../../assets/img/Apple.png";
-import Line from "../../assets/img/Divider-ine-copy.png"
+import Line from "../../assets/img/Divider-ine-copy.png";
 import { useNavigation } from "@react-navigation/native";
 import { DoctorContext } from "../../context/ContextDoctor";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 const Login = () => {
-  const { signInUser } = useContext(DoctorContext)
-  const { navigate } = useNavigation()
+  const { signInUser } = useContext(DoctorContext);
+  const { navigate } = useNavigation();
+
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior="padding" // Android için uygun davranış biçimi
+    <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ flexGrow: 1, backgroundColor: "#fff", justifyContent: "space-evenly", alignItems: "center", paddingBottom: 60 }}
+      enableOnAndroid={true}
+      keyboardShouldPersistTaps="handled"
+      extraScrollHeight={Platform.OS === 'ios' ? -80 : 0}
     >
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.container}>
-          <View>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Email ünvan</Text>
-              <View style={styles.inputField}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Email ünvanınızı daxil edin"
-                  placeholderTextColor="rgba(178,188,201,1)"
-                  keyboardType="email-address"
-                />
-              </View>
-            </View>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Şifrəniz</Text>
-              <View style={styles.inputField}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Şifrənizi daxil edin"
-                  placeholderTextColor="rgba(178,188,201,1)"
-                  secureTextEntry
-                />
-                <Image
-                  style={styles.icon}
-                  source={{
-                    uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/m7ujnaub38c-I401%3A8620%3B25%3A2271?alt=media&token=7b267e5d-d288-4d87-85ac-647359697752",
-                  }}
-                />
-              </View>
-            </View>
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              signInUser("nebi@gmail.com", "nebi1234")
-            }}
-            style={styles.Button}>
-            <Text style={styles.SignIn}>Continue</Text>
-          </TouchableOpacity>
-          <View style={styles.Login}>
-            <Text style={styles.text}>Hesabınız yoxdur? </Text>
-            <TouchableOpacity onPress={() => navigate("Register")}>
-              <Text style={styles.buttonText}>Qeydiyyat</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.containerLine}>
-            <Image
-              source={Line}
-              style={styles.dividerLine}
+      <View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Email ünvan</Text>
+          <View style={styles.inputField}>
+            <TextInput
+              style={styles.input}
+              placeholder="Email ünvanınızı daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+              keyboardType="email-address"
             />
-
-            <Text style={styles.textLine}>Or</Text>
-
-            <Image
-              source={Line}
-              style={styles.dividerLine}
-            />
-          </View>
-          <View style={styles.containerIcon}>
-            {/* Google Login Button */}
-            <TouchableOpacity style={styles.buttonIcon} onPress={() => alert('Google ile giriş yapıldı!')}>
-              <Image source={GooglePng} />
-            </TouchableOpacity>
-
-            {/* iCloud Login Button */}
-            <TouchableOpacity style={styles.buttonIcon} onPress={() => alert('iCloud ile giriş yapıldı!')}>
-              <Image source={IcloudPng} />
-            </TouchableOpacity>
-
-            {/* Facebook Login Button */}
-            <TouchableOpacity style={styles.buttonIcon} onPress={() => alert('Facebook ile giriş yapıldı!')}>
-              <Image source={FacebookPng} />
-            </TouchableOpacity>
           </View>
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Şifrəniz</Text>
+          <View style={styles.inputField}>
+            <TextInput
+              style={styles.input}
+              placeholder="Şifrənizi daxil edin"
+              placeholderTextColor="rgba(178,188,201,1)"
+              secureTextEntry
+            />
+            <Image
+              style={styles.icon}
+              source={{
+                uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/m7ujnaub38c-I401%3A8620%3B25%3A2271?alt=media&token=7b267e5d-d288-4d87-85ac-647359697752",
+              }}
+            />
+          </View>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => {
+            signInUser("nebi@gmail.com", "nebi1234");
+          }}
+          style={styles.Button}
+        >
+          <Text style={styles.SignIn}>Continue</Text>
+        </TouchableOpacity>
+      </View>
+
+
+
+      <View style={styles.Login}>
+        <Text style={styles.text}>Hesabınız yoxdur? </Text>
+        <TouchableOpacity onPress={() => navigate("Register")}>
+          <Text style={styles.buttonText}>Qeydiyyat</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.containerLine}>
+        <Image source={Line} style={styles.dividerLine} />
+        <Text style={styles.textLine}>Və ya</Text>
+        <Image source={Line} style={styles.dividerLine} />
+      </View>
+
+      <View style={styles.containerIcon}>
+        <TouchableOpacity
+          style={styles.buttonIcon}
+          onPress={() => alert("Google ilə giriş yapıldı!")}
+        >
+          <Image source={GooglePng} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.buttonIcon}
+          onPress={() => alert("iCloud ilə giriş yapıldı!")}
+        >
+          <Image source={IcloudPng} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.buttonIcon}
+          onPress={() => alert("Facebook ilə giriş yapıldı!")}
+        >
+          <Image source={FacebookPng} />
+        </TouchableOpacity>
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
 export default Login;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center", // Yatayda ortalama
-    justifyContent: "space-evenly", // Dikeyde ortalama
-    padding: 16,
-    backgroundColor: "#fff",
-  },
   inputGroup: {
     width: "100%",
     maxWidth: 327,
@@ -118,10 +127,9 @@ const styles = StyleSheet.create({
   },
   inputField: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    padding: 7, // Paddingi küçülttük
+    paddingHorizontal: 16,
     borderWidth: 1,
     borderColor: "rgba(244,244,246,1)",
     borderRadius: 16,
@@ -129,8 +137,9 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: 14, // Font boyutunu küçülttük
+    fontSize: 14,
     color: "#333",
+    height: hp("5%"),
   },
   icon: {
     width: 24,
@@ -138,87 +147,66 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   Button: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
     width: 327,
     height: 56,
     padding: 16,
     borderRadius: 32,
-    boxSizing: "border-box",
     backgroundColor: "rgba(46,111,243,1)",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
   },
   SignIn: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontFamily: "Open Sans, sans-serif",
-    fontWeight: 700,
+    fontWeight: "700",
     textAlign: "center",
   },
   Login: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     paddingTop: 40,
   },
   text: {
     fontSize: 16,
-    color: '#7D8A95',
+    color: "#7D8A95",
     marginRight: 8,
   },
   buttonText: {
     color: "black",
     fontSize: 16,
-    fontFamily: "Open Sans, sans-serif",
-    fontWeight: 700,
+    fontWeight: "700",
     textAlign: "center",
   },
   containerIcon: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  button: {
-    marginVertical: 10,
-    padding: 10,
-    backgroundColor: '#3b5998', // Facebook'un mavi rengi, her buton için özelleştirilebilir
-    borderRadius: 5,
-  },
-
-  containerIcon: {
-    flexDirection: 'row',
+    flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: 'center',
+    alignItems: "center",
     width: 250,
-    marginBottom: 20,
+    marginTop: 20,
+  },
+  buttonIcon: {
+    padding: 10,
   },
   containerLine: {
-    flexDirection: 'row', // Bu, öğeleri yatay hizalamak için kullanılır.
-    alignItems: 'center',
-    gap: 16, // Bu değeri, flexbox ile benzer şekilde sağladık.
-    position: 'relative', // Gereksiz olsa da, orijinal yapının davranışını taklit edebilmek için ekledik.
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 30,
+    marginBottom: 10,
   },
   dividerLine: {
     width: 137,
     height: 1,
-    resizeMode: 'cover', // object-cover benzeri işlevsellik
-    position: 'relative', // Yine orijinal yapı ile uyumlu olması için
+    resizeMode: "cover",
   },
   textLine: {
-    fontFamily: 'body-2-regular', // Font ailesi, stil dosyanızda tanımlı olmalı.
-    fontSize: 14, // `var(--body-2-regular-font-size)` yerine uygun bir font boyutu
-    fontWeight: '400', // `var(--body-2-regular-font-weight)` yerine uygun bir font ağırlığı
-    color: '#B1B1B1', // `text-graygray-1` yerine uygun bir renk
-    textAlign: 'center',
-    letterSpacing: 0.5, // `tracking-[var(--body-2-regular-letter-spacing)]` yerine uygun bir letter-spacing
-    lineHeight: 20, // `var(--body-2-regular-line-height)` yerine uygun bir line-height
-    marginTop: -1, // `mt-[-1.00px]` yerine uygun margin-top değeri
-    whiteSpace: 'nowrap', // React Native'de `nowrap` varsayılan olarak uygulanır.
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#B1B1B1",
+    textAlign: "center",
+    letterSpacing: 0.5,
+    lineHeight: 20,
+    marginHorizontal: 10,
   },
-
 });
