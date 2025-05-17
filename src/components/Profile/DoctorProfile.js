@@ -282,7 +282,7 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            backgroundColor: '#2E6FF3', 
+            backgroundColor: '#2E6FF3',
             paddingVertical: 10,
             paddingHorizontal: 30,
             borderRadius: 30,
@@ -323,6 +323,17 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
             <Ionicons name="camera-outline" size={30} color="white" style={styles.imageIcon} />
           </TouchableOpacity>
 
+          {/* email input start */}
+          <View style={styles.inputGroup}>
+            <Text style={[styles.label, { color: 'rgb(128, 128, 128)' }]}>Email</Text>
+            <TextInput
+              value={userData.email}
+              style={[styles.input, { borderColor: error?.name ? 'red' : 'rgba(244,244,246,1)', color: 'rgb(128, 128, 128)' }]}
+              placeholderTextColor="rgba(178,188,201,1)"
+              editable={false}
+            />
+            {error?.name && <Text style={{ color: 'red', fontSize: wp("3.5%") }}>{error.name}</Text>}
+          </View>
 
           {/* name input */}
           <View style={styles.inputGroup}>
@@ -610,6 +621,9 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
 
           <TouchableOpacity style={styles.submitButton} onPress={() => submitDoctorForm()}>
             <Text style={styles.submitButtonText}>Təsdiqlə</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.submitButton, { backgroundColor: '#f87171' }]} onPress={() => submitUserProfile()}>
+            <Text style={styles.submitButtonText}>Şifrəni Dəyiş</Text>
           </TouchableOpacity>
         </KeyboardAwareScrollView>
       </Animated.View>
