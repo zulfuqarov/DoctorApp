@@ -48,7 +48,7 @@ const hekimIxtisaslari = [
 ];
 
 const DoctorProfile = ({ showModal, setShowModal }) => {
-  const { userData, LogoutUser } = useContext(DoctorContext)
+  const { userData, LogoutUser, updateUserData } = useContext(DoctorContext)
   const slideAnim = useRef(new Animated.Value(height)).current;
 
   const [name, setName] = useState(userData.userName)

@@ -81,13 +81,23 @@ const Personal = ({ showModal, setShowModal }) => {
       })
       return
     }
+
     updateUserData({
       userName: name,
       userSurname: surname,
       img: photo ? photo.uri : userData.img,
     })
+
+    Toast.show({
+      type: 'success',
+      text1: 'Təbriklər',
+      text2: 'profiliniz uğurla düzəldildi',
+      position: 'top',
+      visibilityTime: 2000,
+      autoHide: true,
+      bottomOffset: 50,
+    })
     Keyboard.dismiss()
-    setShowModal(false)
   }
 
   useEffect(() => {
@@ -158,11 +168,10 @@ const Personal = ({ showModal, setShowModal }) => {
             <Text style={[styles.label, { color: 'rgb(128, 128, 128)' }]}>Email</Text>
             <TextInput
               value={userData.email}
-              style={[styles.input, { borderColor: error?.name ? 'red' : 'rgba(244,244,246,1)', color: 'rgb(128, 128, 128)' }]}
+              style={[styles.input, { borderColor: 'rgba(244,244,246,1)', color: 'rgb(128, 128, 128)' }]}
               placeholderTextColor="rgba(178,188,201,1)"
               editable={false}
             />
-            {error?.name && <Text style={{ color: 'red', fontSize: wp("3.5%") }}>{error.name}</Text>}
           </View>
           {/*name input start  */}
           <View style={styles.inputGroup}>
