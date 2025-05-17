@@ -34,6 +34,7 @@ const ContextDoctor = ({ children }) => {
                 userSurname: data.userSurname,
                 email: data.email,
                 phone: data.phone,
+                img: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png",
                 role: "user",
             })
 

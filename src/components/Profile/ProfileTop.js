@@ -3,24 +3,23 @@ import React, { useContext } from 'react'
 import { DoctorContext } from '../../context/ContextDoctor'
 
 const ProfileTop = ({ shoModalFunc, showModal }) => {
-    const { LogoutUser } = useContext(DoctorContext)
+    const {  userData } = useContext(DoctorContext)
     return (
         <View style={styles.container}>
             <View style={styles.container2}>
                 <Image
-                    source={{ uri: 'https://pngimg.com/uploads/doctor/doctor_PNG16019.png' }}
+                    source={{ uri: `${userData.img}` }}
                     style={styles.avatar}
                 />
                 <View style={styles.nameContainer}>
-                    <Text style={styles.firstName}>Nebi</Text>
-                    <Text style={styles.lastName}>Zulfuqarov</Text>
+                    <Text style={styles.firstName}>{userData.userName}</Text>
+                    <Text style={styles.lastName}>{userData.userSurname}</Text>
                 </View>
             </View>
             <TouchableOpacity
                 onPress={
-                    // shoModalFunc
                     () => {
-                        LogoutUser()
+                        shoModalFunc()
                     }
                 }
                 style={[styles.editButton, showModal && { backgroundColor: "#F87171" }]}>

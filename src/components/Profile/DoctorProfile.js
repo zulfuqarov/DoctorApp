@@ -12,7 +12,7 @@ import {
   Button,
   Alert
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -21,6 +21,7 @@ import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Toast from 'react-native-toast-message';
 import Logo from '../../assets/img/Logo.png';
+import { DoctorContext } from '../../context/ContextDoctor';
 
 const { height } = Dimensions.get('window');
 
@@ -47,10 +48,11 @@ const hekimIxtisaslari = [
 ];
 
 const DoctorProfile = ({ showModal, setShowModal }) => {
+  const { userData, LogoutUser } = useContext(DoctorContext)
   const slideAnim = useRef(new Animated.Value(height)).current;
 
-  const [name, setName] = useState("")
-  const [surname, setSurname] = useState("")
+  const [name, setName] = useState(userData.userName)
+  const [surname, setSurname] = useState(userData.userSurname)
   const [category, setCategory] = useState("")
   const [details, setDetails] = useState("")
 
@@ -276,6 +278,27 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
     <View style={styles.container}>
       <View style={styles.logoWrapper}>
         <Image source={Logo} style={styles.logo} />
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#2E6FF3', 
+            paddingVertical: 10,
+            paddingHorizontal: 30,
+            borderRadius: 30,
+            shadowColor: '#000',
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            elevation: 3,
+          }}
+          onPress={() => {
+            LogoutUser()
+          }}
+        >
+          <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16, marginRight: 8 }}>
+            Çıxış
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <Animated.View style={[styles.panel, { top: slideAnim }]}>
