@@ -24,7 +24,7 @@ import { DoctorContext } from '../../context/ContextDoctor';
 const { height } = Dimensions.get('window');
 
 const Personal = ({ showModal, setShowModal }) => {
-  const { userData, LogoutUser } = useContext(DoctorContext)
+  const { userData, LogoutUser, updateUserData } = useContext(DoctorContext)
   const [photo, setPhoto] = useState(null);
   const slideAnim = useRef(new Animated.Value(height)).current;
 
@@ -81,14 +81,10 @@ const Personal = ({ showModal, setShowModal }) => {
       })
       return
     }
-    Toast.show({
-      type: 'success',
-      text1: 'Təbriklər',
-      text2: 'Həkim profiliniz uğurla yaradıldı',
-      position: 'top',
-      visibilityTime: 2000,
-      autoHide: true,
-      bottomOffset: 50,
+    updateUserData({
+      userName: name,
+      userSurname: surname,
+      img: photo ? photo.uri : userData.img,
     })
     Keyboard.dismiss()
     setShowModal(false)
@@ -159,10 +155,10 @@ const Personal = ({ showModal, setShowModal }) => {
 
           {/* email input start */}
           <View style={styles.inputGroup}>
-            <Text style={[styles.label,{color: 'rgb(128, 128, 128)'}]}>Email</Text>
+            <Text style={[styles.label, { color: 'rgb(128, 128, 128)' }]}>Email</Text>
             <TextInput
               value={userData.email}
-              style={[styles.input, { borderColor: error?.name ? 'red' : 'rgba(244,244,246,1)' ,color: 'rgb(128, 128, 128)'}]}
+              style={[styles.input, { borderColor: error?.name ? 'red' : 'rgba(244,244,246,1)', color: 'rgb(128, 128, 128)' }]}
               placeholderTextColor="rgba(178,188,201,1)"
               editable={false}
             />
@@ -196,7 +192,7 @@ const Personal = ({ showModal, setShowModal }) => {
           <TouchableOpacity style={styles.submitButton} onPress={() => submitUserProfile()}>
             <Text style={styles.submitButtonText}>Düzəlişi Təsdiqlə</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.submitButton,{backgroundColor: '#f87171'}]} onPress={() => submitUserProfile()}>
+          <TouchableOpacity style={[styles.submitButton, { backgroundColor: '#f87171' }]} onPress={() => submitUserProfile()}>
             <Text style={styles.submitButtonText}>Şifrəni Dəyiş</Text>
           </TouchableOpacity>
         </KeyboardAwareScrollView>

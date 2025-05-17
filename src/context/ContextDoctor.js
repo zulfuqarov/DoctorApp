@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { createContext, useEffect, useState } from 'react'
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@react-native-firebase/auth';
 // import firestore from '@react-native-firebase/firestore';
-import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot } from '@react-native-firebase/firestore';
+import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot,updateDoc } from '@react-native-firebase/firestore';
 import Toast from 'react-native-toast-message';
 import Welcom from '../screens/Welcom/Welcom';
 import { useNavigation } from '@react-navigation/native';
@@ -146,6 +146,25 @@ const ContextDoctor = ({ children }) => {
 
     };
 
+    // updatet data start
+    const updateUserData = async (data) => {
+        try {
+            const docRef = doc(db, 'users', userUid);
+            await updateDoc(docRef, data);
+            console.log("User data updated successfully");
+            // Toast.show({
+            //     type: 'success',
+            //     position: 'top',
+            //     text1: 'Məlumat yeniləndi!',
+            //     text2: 'İstifadəçi məlumatları uğurla yeniləndi!',
+            //     visibilityTime: 2000,
+            //     autoHide: true,
+            // });
+        } catch (error) {
+            console.log("Error updating user data:", error);
+        }
+    }
+
     // Check Login User Start
     const CheckLoginUser = () => {
         onAuthStateChanged(auth, async (user) => {
@@ -181,6 +200,7 @@ const ContextDoctor = ({ children }) => {
             RegisterUser,
             signInUser,
             LogoutUser,
+            updateUserData,
         }}>
             {
                 children
