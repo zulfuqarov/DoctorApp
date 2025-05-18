@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState, useRef } from 'react'
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@react-native-firebase/auth';
 // import firestore from '@react-native-firebase/firestore';
-import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot,updateDoc } from '@react-native-firebase/firestore';
+import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, updateDoc } from '@react-native-firebase/firestore';
 import Toast from 'react-native-toast-message';
 import Welcom from '../screens/Welcom/Welcom';
 import { useNavigation } from '@react-navigation/native';
@@ -16,10 +16,12 @@ const ContextDoctor = ({ children }) => {
     // const [checkUser, setChekUser] = useState(false)
     const [userUid, setuserUid] = useState(null)
     const [userData, setUserData] = useState()
+    const FirstRegister = useRef(false)
     // const [loading, setLoading] = useState(true)
 
     // register start
     const RegisterUser = async (data) => {
+        FirstRegister.current = true;
         navigation.reset({
             index: 0,
             routes: [{ name: 'Welcome' }],
@@ -37,6 +39,18 @@ const ContextDoctor = ({ children }) => {
                 img: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png",
                 role: "user",
             })
+            const userSnapshot = await getDoc(userRef);
+            if (userSnapshot.exists()) {
+                const data = userSnapshot.data();
+                setUserData(data);
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'HomePage' }],
+                });
+            } else {
+                console.log("Belə bir sənəd mövcud deyil.");
+                return null;
+            }
 
             Toast.show({
                 type: 'success',
@@ -46,6 +60,10 @@ const ContextDoctor = ({ children }) => {
                 visibilityTime: 2000,
                 autoHide: true,
             });
+
+            setTimeout(() => {
+                FirstRegister.current = false;
+            }, 1000);
 
         } catch (error) {
             console.log("Error creating user:", error);
@@ -124,26 +142,26 @@ const ContextDoctor = ({ children }) => {
     }
 
     // get user data start
-    const getUserData = (userId) => {
-        const docRef = doc(db, 'users', userId);
-        const unsubscribe = onSnapshot(docRef, (docSnap) => {
-            if (docSnap.exists()) {
-                setUserData(docSnap.data());
+    const getUserData = async (userId) => {
+        try {
+            const docRef = doc(db, 'users', userId);
+            const userSnapshot = await getDoc(docRef);
+
+            if (userSnapshot.exists()) {
+                const data = userSnapshot.data();
+                setUserData(data);
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'HomePage' }],
                 });
             } else {
-                console.log("No such document!");
-                autoLogout()
+                console.log("Belə bir sənəd mövcud deyil.");
+                return null;
             }
-        }, (error) => {
+        } catch (error) {
             console.log("Error getting user data:", error);
             autoLogout()
-
-        });
-
-
+        }
     };
 
     // updatet data start
@@ -168,6 +186,12 @@ const ContextDoctor = ({ children }) => {
     // Check Login User Start
     const CheckLoginUser = () => {
         onAuthStateChanged(auth, async (user) => {
+            if (FirstRegister.current) {
+                console.log("ilk qeydiyyat")
+                setuserUid(null)
+                return;
+            };
+
             if (user) {
                 setuserUid(user.uid)
             }
@@ -190,6 +214,10 @@ const ContextDoctor = ({ children }) => {
     useEffect(() => {
         if (userUid) {
             getUserData(userUid);
+            const unsubscribe = onSnapshot(doc(db, 'users', userUid), (doc) => {
+                setUserData(doc.data());
+            });
+            return () => unsubscribe();
         }
     }, [userUid])
 
