@@ -67,37 +67,49 @@ const Personal = ({ showModal, setShowModal }) => {
 
   }
 
-  const submitUserProfile = () => {
-    const errorText = validate()
-    setError(errorText)
-    if (Object.keys(errorText).length > 0) {
+  const submitUserProfile = async () => {
+    try {
+      const errorText = validate()
+      setError(errorText)
+      if (Object.keys(errorText).length > 0) {
+        Toast.show({
+          type: 'error',
+          text1: 'Xətalı məlumat',
+          position: 'top',
+          visibilityTime: 2000,
+          autoHide: true,
+          bottomOffset: 50,
+        })
+        return
+      }
+
+      await updateUserData({
+        userName: name,
+        userSurname: surname,
+        img: photo ? photo.uri : userData.img,
+      })
+
       Toast.show({
-        type: 'error',
-        text1: 'Xətalı məlumat',
+        type: 'success',
+        text1: 'Təbriklər',
+        text2: 'profiliniz uğurla düzəldildi',
         position: 'top',
         visibilityTime: 2000,
         autoHide: true,
         bottomOffset: 50,
       })
-      return
+      Keyboard.dismiss()
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Düzəliş edilmədi',
+        text2: 'Profiliniz düzəldilmədi applicationdan çıxın və yenidən yoxlayın',
+        position: 'top',
+        visibilityTime: 2000,
+        autoHide: true,
+        bottomOffset: 50,
+      })
     }
-
-    updateUserData({
-      userName: name,
-      userSurname: surname,
-      img: photo ? photo.uri : userData.img,
-    })
-
-    Toast.show({
-      type: 'success',
-      text1: 'Təbriklər',
-      text2: 'profiliniz uğurla düzəldildi',
-      position: 'top',
-      visibilityTime: 2000,
-      autoHide: true,
-      bottomOffset: 50,
-    })
-    Keyboard.dismiss()
   }
 
   useEffect(() => {

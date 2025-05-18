@@ -270,7 +270,7 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
       autoHide: true,
       bottomOffset: 50,
     })
-    setShowModal(false)
+    // setShowModal(false)
   }
 
 
@@ -315,7 +315,7 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
               source={{
                 uri: photo
                   ? photo.uri
-                  : 'https://pngimg.com/uploads/doctor/doctor_PNG16019.png',
+                  : `${userData.img}`,
               }}
               style={styles.image}
             />

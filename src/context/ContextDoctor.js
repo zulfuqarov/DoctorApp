@@ -41,7 +41,7 @@ const ContextDoctor = ({ children }) => {
             })
             const userSnapshot = await getDoc(userRef);
             if (userSnapshot.exists()) {
-                const data = userSnapshot.data();
+                const data = { ...userSnapshot.data(), id: userSnapshot.id };
                 setUserData(data);
                 navigation.reset({
                     index: 0,
@@ -113,7 +113,8 @@ const ContextDoctor = ({ children }) => {
                 routes: [{ name: 'Login' }],
             });
         }
-    };
+    }
+
     // logout start
     const LogoutUser = async () => {
         try {
@@ -148,7 +149,7 @@ const ContextDoctor = ({ children }) => {
             const userSnapshot = await getDoc(docRef);
 
             if (userSnapshot.exists()) {
-                const data = userSnapshot.data();
+                const data = { ...userSnapshot.data(), id: userSnapshot.id };
                 setUserData(data);
                 navigation.reset({
                     index: 0,
@@ -167,8 +168,14 @@ const ContextDoctor = ({ children }) => {
     // updatet data start
     const updateUserData = async (data) => {
         try {
-            const docRef = doc(db, 'users', userUid);
+            const docRef = doc(db, 'users', userData.id);
             await updateDoc(docRef, data);
+            const unsubscribe = onSnapshot(doc(db, 'users', userData.id), (doc) => {
+                setUserData({
+                    ...doc.data(),
+                    id: doc.id,
+                });
+            });
             console.log("User data updated successfully");
             // Toast.show({
             //     type: 'success',
@@ -180,6 +187,7 @@ const ContextDoctor = ({ children }) => {
             // });
         } catch (error) {
             console.log("Error updating user data:", error);
+            throw error;
         }
     }
 
@@ -214,10 +222,6 @@ const ContextDoctor = ({ children }) => {
     useEffect(() => {
         if (userUid) {
             getUserData(userUid);
-            const unsubscribe = onSnapshot(doc(db, 'users', userUid), (doc) => {
-                setUserData(doc.data());
-            });
-            return () => unsubscribe();
         }
     }, [userUid])
 
