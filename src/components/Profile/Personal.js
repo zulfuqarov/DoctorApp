@@ -99,6 +99,8 @@ const Personal = ({ showModal, setShowModal }) => {
         bottomOffset: 50,
       })
       Keyboard.dismiss()
+      setShowModal(false)
+
     } catch (error) {
       Toast.show({
         type: 'error',

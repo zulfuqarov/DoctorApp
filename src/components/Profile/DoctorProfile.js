@@ -10,7 +10,8 @@ import {
   Dimensions,
   Platform,
   Button,
-  Alert
+  Alert,
+  Keyboard
 } from 'react-native';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -236,14 +237,25 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
 
   }
 
-  const submitDoctorForm = () => {
-    const errorCheck = errorFunction()
-    if (Object.keys(errorCheck).length > 0) {
-      if (errorCheck.workTime) {
+  const submitDoctorForm = async () => {
+    try {
+      const errorCheck = errorFunction()
+      if (Object.keys(errorCheck).length > 0) {
+        if (errorCheck.workTime) {
+          Toast.show({
+            type: 'error',
+            text1: 'Xətalı məlumat',
+            text2: 'İş saat aralığını seçin',
+            position: 'top',
+            visibilityTime: 2000,
+            autoHide: true,
+            bottomOffset: 50,
+          })
+          return
+        }
         Toast.show({
           type: 'error',
           text1: 'Xətalı məlumat',
-          text2: 'İş saat aralığını seçin',
           position: 'top',
           visibilityTime: 2000,
           autoHide: true,
@@ -251,26 +263,36 @@ const DoctorProfile = ({ showModal, setShowModal }) => {
         })
         return
       }
+
+      await updateUserData({
+        userName: name,
+        userSurname: surname,
+        img: photo ? photo.uri : userData.img,
+      })
+
       Toast.show({
-        type: 'error',
-        text1: 'Xətalı məlumat',
+        type: 'success',
+        text1: 'Təbriklər',
+        text2: 'Həkim profiliniz uğurla düzəldildi',
         position: 'top',
         visibilityTime: 2000,
         autoHide: true,
         bottomOffset: 50,
       })
-      return
+      Keyboard.dismiss()
+      setShowModal(false)
+
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Düzəliş edilmədi',
+        text2: 'Profiliniz düzəldilmədi applicationdan çıxın və yenidən yoxlayın',
+        position: 'top',
+        visibilityTime: 2000,
+        autoHide: true,
+        bottomOffset: 50,
+      })
     }
-    Toast.show({
-      type: 'success',
-      text1: 'Təbriklər',
-      text2: 'Həkim profiliniz uğurla yaradıldı',
-      position: 'top',
-      visibilityTime: 2000,
-      autoHide: true,
-      bottomOffset: 50,
-    })
-    // setShowModal(false)
   }
 
 

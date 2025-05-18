@@ -195,7 +195,6 @@ const ContextDoctor = ({ children }) => {
     const CheckLoginUser = () => {
         onAuthStateChanged(auth, async (user) => {
             if (FirstRegister.current) {
-                console.log("ilk qeydiyyat")
                 setuserUid(null)
                 return;
             };

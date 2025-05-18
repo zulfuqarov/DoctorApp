@@ -66,10 +66,14 @@ const Register = () => {
 
     if (registerData.password === "") {
       errorText.password = "Şifrənizi daxil edin"
+    } else if (registerData.password.length < 6) {
+      errorText.password = "Şifrəniz 6 simvoldan az olmamalıdır"
     }
 
     if (registerData.phone === "") {
       errorText.phone = "Telefon nömrənizi daxil edin"
+    } else if (registerData.phone.length < 13) {
+      errorText.phone = "Telefon nömrəniz 13 simvoldan az olmamalıdır"
     }
 
     setError(errorText)
@@ -176,7 +180,12 @@ const Register = () => {
                 keyboardType="number-pad"
                 maxLength={7}
                 value={registerData.phone.slice(7)}
-                onChangeText={(text) => handlePhoneNumberChange(text)}
+                onChangeText={(text) => {
+                  if (text.length > 7) {
+                    return
+                  }
+                  handlePhoneNumberChange(text)
+                }}
               />
             </View>
             {
